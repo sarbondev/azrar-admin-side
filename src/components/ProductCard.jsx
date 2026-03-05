@@ -7,7 +7,9 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2, Eye } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { getColorCode } from "@/lib/colors";
 
 export const ProductCard = ({
   product,
@@ -15,21 +17,15 @@ export const ProductCard = ({
   setEditingProduct,
   setDeleteProduct,
 }) => {
+  const navigate = useNavigate();
+
   const handleEdit = (product) => {
     setEditingProduct(product);
     setShowProductDialog(true);
   };
 
-  const categories = [
-    { value: "bathrobe", label: "Xalat" },
-    { value: "towel", label: "Sochiq" },
-    { value: "set", label: "To'plam" },
-    { value: "accessories", label: "Aksessuarlar" },
-  ];
-
-  const getCategoryLabel = (category) => {
-    const cat = categories.find((c) => c.value === category);
-    return cat ? cat.label : category;
+  const handleView = (productId) => {
+    navigate(`/products/${productId}`);
   };
 
   const getImageUrl = (imagePath) => {
@@ -40,18 +36,27 @@ export const ProductCard = ({
   };
 
   return (
-    <Card className="overflow-hidden">
-      <div className="aspect-square relative">
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+      <div className="aspect-square relative group">
         <img
           src={getImageUrl(product.images?.[0]) || "/placeholder.svg"}
-          alt={product.title_uz}
+          alt={product.translations?.uz.title || "Product Image"}
           className="w-full h-full object-cover"
         />
-        <div className="absolute top-2 right-2 flex gap-2">
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={() => handleView(product._id)}
+            title="Ko'rish"
+          >
+            <Eye className="h-4 w-4" />
+          </Button>
           <Button
             size="sm"
             variant="secondary"
             onClick={() => handleEdit(product)}
+            title="Tahrirlash"
           >
             <Edit className="h-4 w-4" />
           </Button>
@@ -59,30 +64,53 @@ export const ProductCard = ({
             size="sm"
             variant="destructive"
             onClick={() => setDeleteProduct(product)}
+            title="O'chirish"
           >
             <Trash2 className="h-4 w-4" />
           </Button>
         </div>
       </div>
       <CardHeader>
-        <div className="flex justify-between items-start">
-          <CardTitle className="text-lg">
-            {product.tranlations.uz.title || "smth"}
+        <div className="flex justify-between items-start gap-2">
+          <CardTitle className="text-lg line-clamp-1">
+            {product.translations?.uz.title || "smth"}
           </CardTitle>
-          <Badge variant="secondary">
-            {getCategoryLabel(product.category)}
+          <Badge variant="secondary" className="whitespace-nowrap">
+            {product.category?.name_uz || "Kategoriya"}
           </Badge>
         </div>
         <CardDescription className="line-clamp-2">
-          {product.tranlations.uz.description || "smth"}
+          {product.translations?.uz.description || "smth"}
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-2">
-        <p className="font-bold">{product.price} So'm</p>
+      <CardContent className="space-y-3">
+        <p className="font-bold text-lg">${product.price}</p>
+        
         {product.colors?.length > 0 && (
-          <p className="text-sm text-muted-foreground">
-            Ranglar: {product.colors.join(", ")}
-          </p>
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-gray-600">Ranglar:</p>
+            <div className="flex flex-wrap gap-2">
+              {product.colors.map((color, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-1 px-2 py-1 bg-gray-50 rounded-full border border-gray-200"
+                  title={color}
+                >
+                  <div
+                    className="w-4 h-4 rounded-full border border-gray-300"
+                    style={{ backgroundColor: getColorCode(color) }}
+                  />
+                  <span className="text-xs text-gray-600">{color}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        
+        {product.images?.length > 1 && (
+          <div className="text-xs text-gray-400 pt-2 border-t">
+            📷 {product.images.length} ta rasm
+          </div>
         )}
       </CardContent>
     </Card>

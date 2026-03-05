@@ -1,10 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Package, ShoppingCart, Users } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingCart, Users, Tag } from "lucide-react";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Mahsulotlar", href: "/products", icon: Package },
+  { name: "Kategoriyalar", href: "/categories", icon: Tag },
   { name: "Buyurtmalar", href: "/orders", icon: ShoppingCart },
   { name: "Adminlar", href: "/admins", icon: Users },
 ];

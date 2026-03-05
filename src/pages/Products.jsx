@@ -17,18 +17,29 @@ const Products = () => {
 
   const { toast } = useToast();
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showProductDialog, setShowProductDialog] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [deleteProduct, setDeleteProduct] = useState(null);
 
-  const categories = [
-    { value: "", label: "Barcha mahsulotlar" },
-    { value: "bathrobe", label: "Xalat" },
-    { value: "towel", label: "Sochiq" },
-    { value: "set", label: "To'plam" },
-    { value: "accessories", label: "Aksessuarlar" },
-  ];
+  // Kategoriyalarni yuklash
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await apiService.getCategories();
+        setCategories(response.data.data.categories || []);
+      } catch (error) {
+        toast({
+          title: "Xatolik",
+          description: "Kategoriyalarni yuklashda xatolik yuz berdi",
+          variant: "destructive",
+        });
+      }
+    };
+
+    fetchCategories();
+  }, [toast]);
 
   const fetchProducts = async () => {
     try {
@@ -114,9 +125,10 @@ const Products = () => {
             onChange={(e) => updateQueryParams({ category: e.target.value })}
             className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
+            <option value="">Barcha mahsulotlar</option>
             {categories?.map((category) => (
-              <option key={category.value} value={category.value}>
-                {category.label}
+              <option key={category._id} value={category._id}>
+                {category.name_uz}
               </option>
             ))}
           </select>

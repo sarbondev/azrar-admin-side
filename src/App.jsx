@@ -9,6 +9,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
+import ProductDetail from "./pages/ProductDetail";
+import Categories from "./pages/Categories";
 import Orders from "./pages/Orders";
 import Admins from "./pages/Admins";
 import Layout from "./components/Layout";
@@ -18,6 +20,10 @@ const ProtectedLayout = () => (
   <ProtectedRoute>
     <Layout />
   </ProtectedRoute>
+);
+
+const ProtectedDetailLayout = ({ children }) => (
+  <ProtectedRoute>{children}</ProtectedRoute>
 );
 
 const router = createBrowserRouter([
@@ -42,6 +48,10 @@ const router = createBrowserRouter([
         element: <Products />,
       },
       {
+        path: "categories",
+        element: <Categories />,
+      },
+      {
         path: "orders",
         element: <Orders />,
       },
@@ -50,6 +60,14 @@ const router = createBrowserRouter([
         element: <Admins />,
       },
     ],
+  },
+  {
+    path: "/products/:id",
+    element: (
+      <ProtectedDetailLayout>
+        <ProductDetail />
+      </ProtectedDetailLayout>
+    ),
   },
   {
     path: "*",

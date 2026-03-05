@@ -96,6 +96,27 @@ class ApiService {
     return this.api.patch(`/products/${id}/inventory`, { stockQuantity });
   }
 
+  // Category endpoints
+  async getCategories() {
+    return this.api.get("/categories");
+  }
+
+  async getCategory(id) {
+    return this.api.get(`/categories/${id}`);
+  }
+
+  async createCategory(data) {
+    return this.api.post("/categories", data);
+  }
+
+  async updateCategory(id, data) {
+    return this.api.put(`/categories/${id}`, data);
+  }
+
+  async deleteCategory(id) {
+    return this.api.delete(`/categories/${id}`);
+  }
+
   // Order endpoints
   async getOrders(params) {
     return this.api.get(`/orders`, { params });
