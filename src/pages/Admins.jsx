@@ -13,10 +13,12 @@ import { Plus, Edit, Trash2, Users, Phone, Calendar } from "lucide-react";
 import AdminDialog from "../components/AdminDialog";
 import DeleteConfirmDialog from "../components/DeleteConfirmDialog";
 import { useAuth } from "../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 const Admins = () => {
   const { toast } = useToast();
   const { admin: user } = useAuth();
+  const { t } = useTranslation();
   const [admins, setAdmins] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAdminDialog, setShowAdminDialog] = useState(false);
@@ -35,8 +37,8 @@ const Admins = () => {
       }
     } catch (error) {
       toast({
-        title: "Xatolik",
-        description: error.response?.data?.message || "Adminlarni yuklashda xatolik yuz berdi",
+        title: t("common.error"),
+        description: error.response?.data?.message || t("admins.loadError"),
         variant: "destructive",
       });
       setAdmins([]);
@@ -54,16 +56,14 @@ const Admins = () => {
     try {
       await apiService.deleteAdmin(deleteAdmin._id);
       toast({
-        title: "Muvaffaqiyat",
-        description: "Admin muvaffaqiyatli o'chirildi",
+        title: t("common.success"),
+        description: t("admins.deleted"),
       });
       fetchAdmins();
     } catch (error) {
       toast({
-        title: "Xatolik",
-        description:
-          error.response?.data?.message ||
-          "Adminni o'chirishda xatolik yuz berdi",
+        title: t("common.error"),
+        description: error.response?.data?.message || t("admins.deleteError"),
         variant: "destructive",
       });
     }
@@ -78,8 +78,10 @@ const Admins = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Adminlar</h1>
-          <p className="text-muted-foreground">Tizim adminlarini boshqaring</p>
+          <h1 className="text-3xl font-bold tracking-tight">
+            {t("admins.title")}
+          </h1>
+          <p className="text-muted-foreground">{t("admins.manage")}</p>
         </div>
         <Button
           onClick={() => {
@@ -88,7 +90,7 @@ const Admins = () => {
           }}
         >
           <Plus className="mr-2 h-4 w-4" />
-          Yangi admin
+          {t("admins.addAdmin")}
         </Button>
       </div>
 
@@ -115,7 +117,7 @@ const Admins = () => {
                       {admin.fullName}
                       {admin._id === user?._id && (
                         <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
-                          Siz
+                          {t("admins.you")}
                         </span>
                       )}
                     </CardTitle>
@@ -126,7 +128,7 @@ const Admins = () => {
                       </p>
                       <p className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
-                        Ro'yxatdan o'tgan:{" "}
+                        {t("admins.registeredAt")}:{" "}
                         {new Date(admin.createdAt).toLocaleDateString("uz-UZ")}
                       </p>
                     </CardDescription>
@@ -159,11 +161,10 @@ const Admins = () => {
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Users className="h-12 w-12 text-gray-400 mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">
-              Adminlar topilmadi
+              {t("admins.notFound")}
             </h3>
             <p className="text-gray-500 text-center mb-4">
-              Hozircha adminlar yo'q yoki qidiruv natijasida hech narsa
-              topilmadi.
+              {t("admins.noAdminsYet")}
             </p>
             <Button
               onClick={() => {
@@ -172,7 +173,7 @@ const Admins = () => {
               }}
             >
               <Plus className="mr-2 h-4 w-4" />
-              Birinchi adminni qo'shing
+              {t("admins.addFirstAdmin")}
             </Button>
           </CardContent>
         </Card>
@@ -193,8 +194,10 @@ const Admins = () => {
         open={!!deleteAdmin}
         onOpenChange={() => setDeleteAdmin(null)}
         onConfirm={handleDelete}
-        title="Adminni o'chirish"
-        description={`"${deleteAdmin?.fullName}" adminini o'chirishni tasdiqlaysizmi? Bu amalni bekor qilib bo'lmaydi.`}
+        title={t("admins.deleteTitle")}
+        description={t("admins.deleteDescription", {
+          name: deleteAdmin?.fullName,
+        })}
       />
     </div>
   );

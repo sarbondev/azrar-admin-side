@@ -12,10 +12,13 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { LogOut, Settings } from "lucide-react";
 import ChangePasswordDialog from "./ChangePasswordDialog";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
   const { admin, logout } = useAuth();
   const [showPasswordDialog, setShowPasswordDialog] = useState(false);
+  const { t } = useTranslation();
 
   const getInitials = (name) => {
     return (
@@ -31,8 +34,9 @@ const Header = () => {
     <>
       <header className="bg-white shadow-sm border-b">
         <div className="flex items-center justify-between px-6 py-4">
-          <h1 className="text-lg">Salom, {admin?.fullName.split(" ")[0]}!</h1>
+          <h1 className="text-lg">{t('header.hello')}, {admin?.fullName.split(" ")[0]}!</h1>
           <div className="flex items-center space-x-4">
+            <LanguageSwitcher />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -60,11 +64,11 @@ const Header = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => setShowPasswordDialog(true)}>
                   <Settings className="mr-2 h-4 w-4" />
-                  <span>Parolni o'zgartirish</span>
+                  <span>{t('header.changePassword')}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={logout}>
                   <LogOut className="mr-2 h-4 w-4" />
-                  <span>Chiqish</span>
+                  <span>{t('header.logout')}</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

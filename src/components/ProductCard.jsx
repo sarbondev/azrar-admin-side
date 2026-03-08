@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Edit, Trash2, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getColorCode } from "@/lib/colors";
+import { useTranslation } from "react-i18next";
 
 export const ProductCard = ({
   product,
@@ -18,6 +19,11 @@ export const ProductCard = ({
   setDeleteProduct,
 }) => {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+
+  const currentLang = i18n.language;
+  const title = product.translations?.[currentLang]?.title || product.translations?.uz?.title || t('common.noTitle');
+  const description = product.translations?.[currentLang]?.description || product.translations?.uz?.description || t('common.noDescription');
 
   const handleEdit = (product) => {
     setEditingProduct(product);
@@ -40,7 +46,7 @@ export const ProductCard = ({
       <div className="aspect-square relative group">
         <img
           src={getImageUrl(product.images?.[0]) || "/placeholder.svg"}
-          alt={product.translations?.uz.title || "Product Image"}
+          alt={product.translations?.uz?.title || "Product Image"}
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
@@ -48,7 +54,7 @@ export const ProductCard = ({
             size="sm"
             variant="secondary"
             onClick={() => handleView(product._id)}
-            title="Ko'rish"
+            title={t('common.view')}
           >
             <Eye className="h-4 w-4" />
           </Button>
@@ -56,7 +62,7 @@ export const ProductCard = ({
             size="sm"
             variant="secondary"
             onClick={() => handleEdit(product)}
-            title="Tahrirlash"
+            title={t('common.edit')}
           >
             <Edit className="h-4 w-4" />
           </Button>
@@ -64,7 +70,7 @@ export const ProductCard = ({
             size="sm"
             variant="destructive"
             onClick={() => setDeleteProduct(product)}
-            title="O'chirish"
+            title={t('common.delete')}
           >
             <Trash2 className="h-4 w-4" />
           </Button>
@@ -73,22 +79,22 @@ export const ProductCard = ({
       <CardHeader>
         <div className="flex justify-between items-start gap-2">
           <CardTitle className="text-lg line-clamp-1">
-            {product.translations?.uz.title || "smth"}
+            {title}
           </CardTitle>
           <Badge variant="secondary" className="whitespace-nowrap">
-            {product.category?.name_uz || "Kategoriya"}
+            {product.category?.[currentLang === 'ru' ? 'name_ru' : 'name_uz'] || t('common.category')}
           </Badge>
         </div>
         <CardDescription className="line-clamp-2">
-          {product.translations?.uz.description || "smth"}
+          {description}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
         <p className="font-bold text-lg">${product.price}</p>
-        
+
         {product.colors?.length > 0 && (
           <div className="space-y-2">
-            <p className="text-sm font-medium text-gray-600">Ranglar:</p>
+            <p className="text-sm font-medium text-gray-600">{t('common.colors')}:</p>
             <div className="flex flex-wrap gap-2">
               {product.colors.map((color, index) => (
                 <div
@@ -106,10 +112,10 @@ export const ProductCard = ({
             </div>
           </div>
         )}
-        
+
         {product.images?.length > 1 && (
           <div className="text-xs text-gray-400 pt-2 border-t">
-            📷 {product.images.length} ta rasm
+            📷 {product.images.length} {t('common.imagesCount')}
           </div>
         )}
       </CardContent>

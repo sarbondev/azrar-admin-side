@@ -15,9 +15,11 @@ import { useToast } from "@/hooks/use-toast";
 import { apiService } from "../services/api";
 import { Loader2, Upload, X } from "lucide-react";
 import ColorPicker from "./ColorPicker";
+import { useTranslation } from "react-i18next";
 
 const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -26,21 +28,14 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
   const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
     translations: {
-      uz: {
-        title: "",
-        description: "",
-      },
-      ru: {
-        title: "",
-        description: "",
-      },
+      uz: { title: "", description: "" },
+      ru: { title: "", description: "" },
     },
     category: "",
     price: "",
     colors: [],
   });
 
-  // Kategoriyalarni yuklash
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -49,8 +44,8 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
         setCategories(response.data.data.categories || []);
       } catch (error) {
         toast({
-          title: "Xatolik",
-          description: "Kategoriyalarni yuklashda xatolik yuz berdi",
+          title: t('common.error'),
+          description: t('products.categoryLoadError'),
           variant: "destructive",
         });
       } finally {
@@ -64,7 +59,6 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
   }, [open, toast]);
 
   useEffect(() => {
-    // cleanup preview URLs on unmount
     return () => {
       selectedPreviews.forEach((url) => URL.revokeObjectURL(url));
     };
@@ -91,14 +85,8 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
     } else {
       setFormData({
         translations: {
-          uz: {
-            title: "",
-            description: "",
-          },
-          ru: {
-            title: "",
-            description: "",
-          },
+          uz: { title: "", description: "" },
+          ru: { title: "", description: "" },
         },
         category: "",
         price: "",
@@ -113,8 +101,6 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     setSelectedFiles(files);
-
-    // generate previews
     const previews = files.map((file) => URL.createObjectURL(file));
     setSelectedPreviews(previews);
   };
@@ -122,7 +108,6 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
   const removeFile = (index) => {
     setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
     setSelectedPreviews((prev) => {
-      // revoke URL for removed preview
       if (prev[index]) URL.revokeObjectURL(prev[index]);
       return prev.filter((_, i) => i !== index);
     });
@@ -136,71 +121,44 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
     e.preventDefault();
     setLoading(true);
 
-    console.log("Submitting formData:", formData);
-
     try {
       const submitData = new FormData();
-
-      // Translations maydonlarini alohida append qilish
-      submitData.append(
-        "translations.uz.title",
-        formData.translations.uz.title,
-      );
-      submitData.append(
-        "translations.uz.description",
-        formData.translations.uz.description,
-      );
-      submitData.append(
-        "translations.ru.title",
-        formData.translations.ru.title,
-      );
-      submitData.append(
-        "translations.ru.description",
-        formData.translations.ru.description,
-      );
-
-      // Asosiy maydonlar
+      submitData.append("translations", JSON.stringify(formData.translations));
       submitData.append("category", formData.category);
       submitData.append("price", formData.price);
 
-      // Ranglar massivi JSON sifatida
       if (formData.colors.length > 0) {
         submitData.append("colors", JSON.stringify(formData.colors));
       }
 
-      // Rasmlar
       selectedFiles.forEach((file) => {
         submitData.append("images", file);
       });
 
-      // Agar mavjud rasmlar qoldirilgan bo'lsa, ularni yubor
       if (existingImages && existingImages.length > 0) {
         submitData.append("existingImages", JSON.stringify(existingImages));
       }
 
       if (product) {
-        console.log("Calling updateProduct with id:", product._id);
-        const response = await apiService.updateProduct(product._id, submitData);
-        console.log("Update response:", response);
+        await apiService.updateProduct(product._id, submitData);
         toast({
-          title: "Muvaffaqiyat",
-          description: "Mahsulot muvaffaqiyatli yangilandi",
+          title: t('common.success'),
+          description: t('products.dialog.updated'),
         });
       } else {
-        const response = await apiService.createProduct(submitData);
-        console.log("Create response:", response);
+        await apiService.createProduct(submitData);
         toast({
-          title: "Muvaffaqiyat",
-          description: "Mahsulot muvaffaqiyatli yaratildi",
+          title: t('common.success'),
+          description: t('products.dialog.created'),
         });
       }
 
       onSuccess();
     } catch (error) {
       toast({
-        title: "Xatolik",
+        title: t('common.error'),
         description:
-          error.response?.data?.message || "Mahsulotni saqlashda xatolik",
+          error.response?.data?.message || t('products.dialog.saveError'),
         variant: "destructive",
       });
     } finally {
@@ -213,11 +171,10 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            {product ? "Mahsulotni tahrirlash" : "Yangi mahsulot qo'shish"}
+            {product ? t('products.dialog.editTitle') : t('products.dialog.addTitle')}
           </DialogTitle>
           <DialogDescription>
-            Mahsulot ma'lumotlarini kiriting. Barcha majburiy maydonlarni
-            to'ldiring.
+            {t('products.dialog.description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -225,7 +182,7 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
           <div className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="translations.uz.title">
-                Mahsulot nomi o'zbekcha*
+                {t('products.dialog.nameUz')}
               </Label>
               <Input
                 id="translations.uz.title"
@@ -235,10 +192,7 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
                     ...prev,
                     translations: {
                       ...prev.translations,
-                      uz: {
-                        ...prev.translations.uz,
-                        title: e.target.value,
-                      },
+                      uz: { ...prev.translations.uz, title: e.target.value },
                     },
                   }))
                 }
@@ -246,7 +200,7 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="title_ru">Mahsulot nomi ruscha*</Label>
+              <Label htmlFor="title_ru">{t('products.dialog.nameRu')}</Label>
               <Input
                 id="title_ru"
                 value={formData.translations.ru.title}
@@ -255,10 +209,7 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
                     ...prev,
                     translations: {
                       ...prev.translations,
-                      ru: {
-                        ...prev.translations.ru,
-                        title: e.target.value,
-                      },
+                      ru: { ...prev.translations.ru, title: e.target.value },
                     },
                   }))
                 }
@@ -267,7 +218,7 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="description_uz">Tavsif o'zbekcha*</Label>
+              <Label htmlFor="description_uz">{t('products.dialog.descriptionUz')}</Label>
               <Textarea
                 id="description_uz"
                 value={formData.translations.uz.description}
@@ -276,10 +227,7 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
                     ...prev,
                     translations: {
                       ...prev.translations,
-                      uz: {
-                        ...prev.translations.uz,
-                        description: e.target.value,
-                      },
+                      uz: { ...prev.translations.uz, description: e.target.value },
                     },
                   }))
                 }
@@ -288,7 +236,7 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="description_ru">Tavsif ruscha*</Label>
+              <Label htmlFor="description_ru">{t('products.dialog.descriptionRu')}</Label>
               <Textarea
                 id="description_ru"
                 value={formData.translations.ru.description}
@@ -297,10 +245,7 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
                     ...prev,
                     translations: {
                       ...prev.translations,
-                      ru: {
-                        ...prev.translations.ru,
-                        description: e.target.value,
-                      },
+                      ru: { ...prev.translations.ru, description: e.target.value },
                     },
                   }))
                 }
@@ -311,22 +256,19 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="category">Kategoriya *</Label>
+                <Label htmlFor="category">{t('products.dialog.category')}</Label>
                 <select
                   id="category"
                   value={formData.category}
                   onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      category: e.target.value,
-                    }))
+                    setFormData((prev) => ({ ...prev, category: e.target.value }))
                   }
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   disabled={categoriesLoading}
                   required
                 >
                   <option value="">
-                    {categoriesLoading ? "Yükləniyor..." : "Kategoriya tanlang"}
+                    {categoriesLoading ? t('products.dialog.categoryLoading') : t('products.dialog.selectCategory')}
                   </option>
                   {categories.map((cat) => (
                     <option key={cat._id} value={cat._id}>
@@ -337,7 +279,7 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
               </div>
 
               <div className="grid gap-2">
-                <Label htmlFor="price">Narx ($) *</Label>
+                <Label htmlFor="price">{t('products.dialog.price')}</Label>
                 <Input
                   id="price"
                   type="number"
@@ -345,10 +287,7 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
                   min="0"
                   value={formData.price}
                   onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      price: e.target.value,
-                    }))
+                    setFormData((prev) => ({ ...prev, price: e.target.value }))
                   }
                   required
                 />
@@ -358,15 +297,12 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
             <ColorPicker
               value={formData.colors}
               onChange={(colors) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  colors,
-                }))
+                setFormData((prev) => ({ ...prev, colors }))
               }
             />
 
             <div className="grid gap-2">
-              <Label htmlFor="images">Rasmlar</Label>
+              <Label htmlFor="images">{t('products.dialog.images')}</Label>
               <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
                 <input
                   id="images"
@@ -382,15 +318,14 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
                 >
                   <Upload className="h-8 w-8 text-gray-400 mb-2" />
                   <span className="text-sm text-gray-600">
-                    Rasmlarni tanlash uchun bosing
+                    {t('products.dialog.selectImages')}
                   </span>
                   <span className="text-xs text-gray-400 mt-1">
-                    PNG, JPG, GIF (maksimal 5MB)
+                    {t('products.dialog.imageFormats')}
                   </span>
                 </label>
               </div>
 
-              {/* Mavjud rasmlar */}
               {existingImages && existingImages.length > 0 && (
                 <div className="mt-2 grid grid-cols-3 gap-2">
                   {existingImages.map((url, idx) => (
@@ -414,9 +349,8 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
 
               {selectedFiles.length > 0 && (
                 <div className="space-y-2">
-                  <Label>Tanlangan rasmlar:</Label>
+                  <Label>{t('products.dialog.selectedImages')}</Label>
 
-                  {/* previews grid */}
                   {selectedPreviews.length > 0 && (
                     <div className="grid grid-cols-3 gap-2 mb-2">
                       {selectedPreviews.map((url, idx) => (
@@ -448,11 +382,11 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
               variant="outline"
               onClick={() => onOpenChange(false)}
             >
-              Bekor qilish
+              {t('common.cancel')}
             </Button>
             <Button type="submit" disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {product ? "Yangilash" : "Yaratish"}
+              {product ? t('common.update') : t('common.create')}
             </Button>
           </DialogFooter>
         </form>

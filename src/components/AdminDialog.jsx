@@ -13,9 +13,11 @@ import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
 import { apiService } from "../services/api"
 import { Loader2 } from "lucide-react"
+import { useTranslation } from "react-i18next"
 
 const AdminDialog = ({ open, onOpenChange, admin, onSuccess }) => {
   const { toast } = useToast()
+  const { t } = useTranslation()
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     fullName: "",
@@ -28,7 +30,7 @@ const AdminDialog = ({ open, onOpenChange, admin, onSuccess }) => {
       setFormData({
         fullName: admin.fullName || "",
         phoneNumber: admin.phoneNumber || "",
-        password: "", // Always empty for security
+        password: "",
       })
     } else {
       setFormData({
@@ -44,8 +46,8 @@ const AdminDialog = ({ open, onOpenChange, admin, onSuccess }) => {
 
     if (!admin && !formData.password) {
       toast({
-        title: "Xatolik",
-        description: "Yangi admin uchun parol majburiy",
+        title: t('common.error'),
+        description: t('admins.dialog.passwordRequiredError'),
         variant: "destructive",
       })
       return
@@ -53,8 +55,8 @@ const AdminDialog = ({ open, onOpenChange, admin, onSuccess }) => {
 
     if (formData.password && formData.password.length < 6) {
       toast({
-        title: "Xatolik",
-        description: "Parol kamida 6 ta belgidan iborat bo'lishi kerak",
+        title: t('common.error'),
+        description: t('admins.dialog.passwordMinLength'),
         variant: "destructive",
       })
       return
@@ -67,7 +69,6 @@ const AdminDialog = ({ open, onOpenChange, admin, onSuccess }) => {
         phoneNumber: formData.phoneNumber,
       }
 
-      // Only include password if it's provided
       if (formData.password) {
         submitData.password = formData.password
       }
@@ -75,22 +76,22 @@ const AdminDialog = ({ open, onOpenChange, admin, onSuccess }) => {
       if (admin) {
         await apiService.updateAdmin(admin._id, submitData)
         toast({
-          title: "Muvaffaqiyat",
-          description: "Admin muvaffaqiyatli yangilandi",
+          title: t('common.success'),
+          description: t('admins.dialog.updated'),
         })
       } else {
         await apiService.createAdmin(submitData)
         toast({
-          title: "Muvaffaqiyat",
-          description: "Admin muvaffaqiyatli yaratildi",
+          title: t('common.success'),
+          description: t('admins.dialog.created'),
         })
       }
 
       onSuccess()
     } catch (error) {
       toast({
-        title: "Xatolik",
-        description: error.response?.data?.message || "Adminni saqlashda xatolik",
+        title: t('common.error'),
+        description: error.response?.data?.message || t('admins.dialog.saveError'),
         variant: "destructive",
       })
     } finally {
@@ -102,14 +103,14 @@ const AdminDialog = ({ open, onOpenChange, admin, onSuccess }) => {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{admin ? "Adminni tahrirlash" : "Yangi admin qo'shish"}</DialogTitle>
-          <DialogDescription>Admin ma'lumotlarini kiriting. Barcha majburiy maydonlarni to'ldiring.</DialogDescription>
+          <DialogTitle>{admin ? t('admins.dialog.editTitle') : t('admins.dialog.addTitle')}</DialogTitle>
+          <DialogDescription>{t('admins.dialog.description')}</DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="fullName">To'liq ism *</Label>
+              <Label htmlFor="fullName">{t('admins.dialog.fullName')}</Label>
               <Input
                 id="fullName"
                 value={formData.fullName}
@@ -124,7 +125,7 @@ const AdminDialog = ({ open, onOpenChange, admin, onSuccess }) => {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="phoneNumber">Telefon raqami *</Label>
+              <Label htmlFor="phoneNumber">{t('admins.dialog.phoneNumber')}</Label>
               <Input
                 id="phoneNumber"
                 type="tel"
@@ -141,7 +142,9 @@ const AdminDialog = ({ open, onOpenChange, admin, onSuccess }) => {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="password">Parol {admin ? "(o'zgartirish uchun)" : "*"}</Label>
+              <Label htmlFor="password">
+                {admin ? `${t('admins.dialog.password')} ${t('admins.dialog.passwordForChange')}` : t('admins.dialog.passwordRequired')}
+              </Label>
               <Input
                 id="password"
                 type="password"
@@ -153,19 +156,19 @@ const AdminDialog = ({ open, onOpenChange, admin, onSuccess }) => {
                   }))
                 }
                 required={!admin}
-                placeholder={admin ? "Yangi parol (ixtiyoriy)" : "Parol"}
+                placeholder={admin ? t('admins.dialog.passwordPlaceholderEdit') : t('admins.dialog.passwordPlaceholderNew')}
               />
-              {admin && <p className="text-xs text-gray-500">Parolni o'zgartirmaslik uchun bo'sh qoldiring</p>}
+              {admin && <p className="text-xs text-gray-500">{t('admins.dialog.passwordLeaveEmpty')}</p>}
             </div>
           </div>
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Bekor qilish
+              {t('common.cancel')}
             </Button>
             <Button type="submit" disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {admin ? "Yangilash" : "Yaratish"}
+              {admin ? t('common.update') : t('common.create')}
             </Button>
           </DialogFooter>
         </form>

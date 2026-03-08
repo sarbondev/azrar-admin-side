@@ -8,8 +8,10 @@ import {
 } from "@/components/ui/card";
 import { apiService } from "../services/api";
 import { Package, ShoppingCart, Users, TrendingUp } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Dashboard = () => {
+  const { t } = useTranslation();
   const [stats, setStats] = useState({
     totalProducts: 0,
     totalOrders: 0,
@@ -69,42 +71,36 @@ const Dashboard = () => {
 
   const statCards = [
     {
-      title: "Jami Mahsulotlar",
+      title: t('dashboard.totalProducts'),
       value: stats.totalProducts,
       icon: Package,
-      description: "Barcha mahsulotlar soni",
+      description: t('dashboard.totalProductsDesc'),
     },
     {
-      title: "Jami Buyurtmalar",
+      title: t('dashboard.totalOrders'),
       value: stats.totalOrders,
       icon: ShoppingCart,
-      description: "Barcha buyurtmalar soni",
+      description: t('dashboard.totalOrdersDesc'),
     },
     {
-      title: "Adminlar",
+      title: t('dashboard.adminsCount'),
       value: stats.totalAdmins,
       icon: Users,
-      description: "Tizim adminlari soni",
+      description: t('dashboard.adminsCountDesc'),
     },
     {
-      title: "Faol Buyurtmalar",
+      title: t('dashboard.activeOrders'),
       value: stats.recentOrders.filter(
         (order) =>
           order.status === "not_contacted" || order.status === "in_process",
       ).length,
       icon: TrendingUp,
-      description: "Jarayondagi buyurtmalar",
+      description: t('dashboard.activeOrdersDesc'),
     },
   ];
 
   const getStatusText = (status) => {
-    const statusMap = {
-      not_contacted: "Bog'lanilmagan",
-      in_process: "Jarayonda",
-      delivered: "Yetkazilgan",
-      cancelled: "Bekor qilingan",
-    };
-    return statusMap[status] || status;
+    return t(`dashboard.status.${status}`, status);
   };
 
   const getStatusColor = (status) => {
@@ -120,7 +116,7 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <h1 className="text-3xl font-bold">{t('dashboard.title')}</h1>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {[1, 2, 3, 4].map((i) => (
             <Card key={i}>
@@ -138,9 +134,9 @@ const Dashboard = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t('dashboard.title')}</h1>
         <p className="text-muted-foreground">
-          Saipov Factory admin paneli umumiy ko'rinishi
+          {t('dashboard.subtitle')}
         </p>
       </div>
 
@@ -166,8 +162,8 @@ const Dashboard = () => {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <Card className="col-span-4">
           <CardHeader>
-            <CardTitle>So'nggi Buyurtmalar</CardTitle>
-            <CardDescription>Eng so'nggi 5 ta buyurtma</CardDescription>
+            <CardTitle>{t('dashboard.recentOrders')}</CardTitle>
+            <CardDescription>{t('dashboard.recentOrdersDesc')}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -197,7 +193,7 @@ const Dashboard = () => {
                 ))
               ) : (
                 <p className="text-center text-muted-foreground py-8">
-                  Hozircha buyurtmalar yo'q
+                  {t('dashboard.noOrders')}
                 </p>
               )}
             </div>
@@ -206,28 +202,28 @@ const Dashboard = () => {
 
         <Card className="col-span-3">
           <CardHeader>
-            <CardTitle>Tezkor Harakatlar</CardTitle>
+            <CardTitle>{t('dashboard.quickActions')}</CardTitle>
             <CardDescription>
-              Tez-tez ishlatiladigan funksiyalar
+              {t('dashboard.quickActionsDesc')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
             <button className="w-full text-left p-3 rounded-lg border hover:bg-gray-50 transition-colors">
-              <div className="font-medium">Yangi mahsulot qo'shish</div>
+              <div className="font-medium">{t('dashboard.addNewProduct')}</div>
               <div className="text-sm text-muted-foreground">
-                Katalogga yangi mahsulot qo'shing
+                {t('dashboard.addNewProductDesc')}
               </div>
             </button>
             <button className="w-full text-left p-3 rounded-lg border hover:bg-gray-50 transition-colors">
-              <div className="font-medium">Buyurtmalarni ko'rish</div>
+              <div className="font-medium">{t('dashboard.viewOrders')}</div>
               <div className="text-sm text-muted-foreground">
-                Barcha buyurtmalarni boshqaring
+                {t('dashboard.viewOrdersDesc')}
               </div>
             </button>
             <button className="w-full text-left p-3 rounded-lg border hover:bg-gray-50 transition-colors">
-              <div className="font-medium">Hisobot olish</div>
+              <div className="font-medium">{t('dashboard.getReport')}</div>
               <div className="text-sm text-muted-foreground">
-                Savdo hisobotlarini ko'ring
+                {t('dashboard.getReportDesc')}
               </div>
             </button>
           </CardContent>

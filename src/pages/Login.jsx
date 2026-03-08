@@ -14,6 +14,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { IMaskInput } from "react-imask";
+import { useTranslation } from "react-i18next";
 
 const PHONE_MASK = "+998 (00) 000-00-00";
 const MIN_PASSWORD_LENGTH = 6;
@@ -21,6 +22,7 @@ const MIN_PASSWORD_LENGTH = 6;
 const Login = () => {
   const { login, isAuthenticated } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     phoneNumber: "+998",
@@ -36,18 +38,18 @@ const Login = () => {
     const rawPhone = formData.phoneNumber.replace(/\D/g, "");
 
     if (rawPhone.length !== 12 || !rawPhone.startsWith("998")) {
-      newErrors.phoneNumber = "To'g'ri telefon raqam kiriting";
+      newErrors.phoneNumber = t('login.errors.invalidPhone');
     }
 
     if (!formData.password) {
-      newErrors.password = "Parol kiritish majburiy";
+      newErrors.password = t('login.errors.passwordRequired');
     } else if (formData.password.length < MIN_PASSWORD_LENGTH) {
-      newErrors.password = `Parol kamida ${MIN_PASSWORD_LENGTH} ta belgidan iborat bo'lishi kerak`;
+      newErrors.password = t('login.errors.passwordMinLength', { min: MIN_PASSWORD_LENGTH });
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  }, [formData]);
+  }, [formData, t]);
 
   const handlePhoneAccept = useCallback(
     (value) => {
@@ -114,8 +116,8 @@ const Login = () => {
 
     if (!validateForm()) {
       toast({
-        title: "Xatolik",
-        description: "Iltimos, barcha maydonlarni to'g'ri to'ldiring",
+        title: t('common.error'),
+        description: t('common.fillAllFields'),
         variant: "destructive",
       });
       return;
@@ -129,21 +131,21 @@ const Login = () => {
 
       if (result.success) {
         toast({
-          title: "Logged in",
+          title: t('login.loggedIn'),
           description: result.message,
           variant: "success",
         });
       } else {
         toast({
-          title: "Xatolik",
+          title: t('common.error'),
           description: result.message,
           variant: "destructive",
         });
       }
     } catch (error) {
       toast({
-        title: "Xatolik",
-        description: "Tizimga kirishda xatolik yuz berdi",
+        title: t('common.error'),
+        description: t('login.errors.loginError'),
         variant: "destructive",
       });
     } finally {
@@ -163,13 +165,13 @@ const Login = () => {
             <img src="./logo_dark.svg" alt="logo" className="mx-auto" />
           </CardTitle>
           <CardDescription className="text-center">
-            Admin panelga kirish uchun ma'lumotlaringizni kiriting
+            {t('login.description')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={(e) => handleSubmit(e)} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="phoneNumber">Telefon raqami</Label>
+              <Label htmlFor="phoneNumber">{t('login.phoneNumber')}</Label>
               <IMaskInput
                 id="phoneNumber"
                 name="phoneNumber"
@@ -194,7 +196,7 @@ const Login = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Parol</Label>
+              <Label htmlFor="password">{t('login.password')}</Label>
               <Input
                 id="password"
                 type="password"
@@ -214,7 +216,7 @@ const Login = () => {
               disabled={loading}
             >
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Kirish
+              {t('login.submit')}
             </Button>
           </form>
         </CardContent>

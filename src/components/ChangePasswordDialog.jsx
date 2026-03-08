@@ -13,10 +13,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const ChangePasswordDialog = ({ open, onOpenChange }) => {
   const { changePassword } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     currentPassword: "",
@@ -29,8 +31,8 @@ const ChangePasswordDialog = ({ open, onOpenChange }) => {
 
     if (formData.newPassword !== formData.confirmPassword) {
       toast({
-        title: "Xatolik",
-        description: "Yangi parollar mos kelmaydi",
+        title: t('common.error'),
+        description: t('changePassword.mismatch'),
         variant: "destructive",
       });
       return;
@@ -38,8 +40,8 @@ const ChangePasswordDialog = ({ open, onOpenChange }) => {
 
     if (formData.newPassword.length < 6) {
       toast({
-        title: "Xatolik",
-        description: "Parol kamida 6 ta belgidan iborat bo'lishi kerak",
+        title: t('common.error'),
+        description: t('changePassword.minLength'),
         variant: "destructive",
       });
       return;
@@ -49,8 +51,8 @@ const ChangePasswordDialog = ({ open, onOpenChange }) => {
     try {
       await changePassword(formData.currentPassword, formData.newPassword);
       toast({
-        title: "Muvaffaqiyat",
-        description: "Parol muvaffaqiyatli o'zgartirildi",
+        title: t('common.success'),
+        description: t('changePassword.success'),
       });
       onOpenChange(false);
       setFormData({
@@ -60,9 +62,9 @@ const ChangePasswordDialog = ({ open, onOpenChange }) => {
       });
     } catch (error) {
       toast({
-        title: "Xatolik",
+        title: t('common.error'),
         description:
-          error.response?.data?.message || "Parolni o'zgartirishda xatolik",
+          error.response?.data?.message || t('changePassword.error'),
         variant: "destructive",
       });
     } finally {
@@ -74,16 +76,15 @@ const ChangePasswordDialog = ({ open, onOpenChange }) => {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Parolni o'zgartirish</DialogTitle>
+          <DialogTitle>{t('changePassword.title')}</DialogTitle>
           <DialogDescription>
-            Yangi parolni kiriting. Parol kamida 6 ta belgidan iborat bo'lishi
-            kerak.
+            {t('changePassword.description')}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="currentPassword">Joriy parol</Label>
+              <Label htmlFor="currentPassword">{t('changePassword.currentPassword')}</Label>
               <Input
                 id="currentPassword"
                 type="password"
@@ -98,7 +99,7 @@ const ChangePasswordDialog = ({ open, onOpenChange }) => {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="newPassword">Yangi parol</Label>
+              <Label htmlFor="newPassword">{t('changePassword.newPassword')}</Label>
               <Input
                 id="newPassword"
                 type="password"
@@ -113,7 +114,7 @@ const ChangePasswordDialog = ({ open, onOpenChange }) => {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="confirmPassword">Yangi parolni tasdiqlang</Label>
+              <Label htmlFor="confirmPassword">{t('changePassword.confirmPassword')}</Label>
               <Input
                 id="confirmPassword"
                 type="password"
@@ -134,11 +135,11 @@ const ChangePasswordDialog = ({ open, onOpenChange }) => {
               variant="outline"
               onClick={() => onOpenChange(false)}
             >
-              Bekor qilish
+              {t('common.cancel')}
             </Button>
             <Button type="submit" disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              O'zgartirish
+              {t('changePassword.submit')}
             </Button>
           </DialogFooter>
         </form>

@@ -34,7 +34,7 @@ export const useQueryParams = (initialState = {}) => {
   };
 
   useEffect(() => {
-    if (!!Object.keys(initialState).length) {
+    if (Object.keys(initialState).length) {
       update({
         ...initialState,
         ...queryParams,

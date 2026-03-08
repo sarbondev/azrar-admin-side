@@ -12,9 +12,11 @@ import { apiService } from "../services/api";
 import { Plus, Edit, Trash2, Tag } from "lucide-react";
 import CategoryDialog from "../components/CategoryDialog";
 import DeleteConfirmDialog from "../components/DeleteConfirmDialog";
+import { useTranslation } from "react-i18next";
 
 const Categories = () => {
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showDialog, setShowDialog] = useState(false);
@@ -32,10 +34,10 @@ const Categories = () => {
       }
     } catch (error) {
       toast({
-        title: "Xatolik",
+        title: t('common.error'),
         description:
           error.response?.data?.message ||
-          "Kategoriyalarni yuklashda xatolik yuz berdi",
+          t('categories.loadError'),
         variant: "destructive",
       });
       setCategories([]);
@@ -47,14 +49,14 @@ const Categories = () => {
   const handleDelete = async () => {
     try {
       await apiService.deleteCategory(deleteCategory._id);
-      toast({ title: "Muvaffaqiyat", description: "Kategoriya o'chirildi" });
+      toast({ title: t('common.success'), description: t('categories.deleted') });
       fetchCategories();
     } catch (error) {
       toast({
-        title: "Xatolik",
+        title: t('common.error'),
         description:
           error.response?.data?.message ||
-          "Kategoriyani o'chirishda xatolik yuz berdi",
+          t('categories.deleteError'),
         variant: "destructive",
       });
     }
@@ -79,14 +81,14 @@ const Categories = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Kategoriyalar</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('categories.title')}</h1>
           <p className="text-muted-foreground">
-            Mahsulot kategoriyalarini boshqaring
+            {t('categories.manage')}
           </p>
         </div>
         <Button onClick={openCreate}>
           <Plus className="mr-2 h-4 w-4" />
-          Yangi kategoriya
+          {t('categories.addCategory')}
         </Button>
       </div>
 
@@ -139,15 +141,14 @@ const Categories = () => {
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Tag className="h-12 w-12 text-gray-400 mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">
-              Kategoriyalar topilmadi
+              {t('categories.notFound')}
             </h3>
             <p className="text-gray-500 text-center mb-4">
-              Hozircha kategoriya yo'q yoki qidiruv natijasida hech narsa
-              topilmadi.
+              {t('categories.noCategoriesYet')}
             </p>
             <Button onClick={openCreate}>
               <Plus className="mr-2 h-4 w-4" />
-              Birinchi kategoriyani qo'shing
+              {t('categories.addFirstCategory')}
             </Button>
           </CardContent>
         </Card>
@@ -168,8 +169,8 @@ const Categories = () => {
         open={!!deleteCategory}
         onOpenChange={() => setDeleteCategory(null)}
         onConfirm={handleDelete}
-        title="Kategoriya o'chirish"
-        description={`"${deleteCategory?.name_uz}" kategoriyasini o'chirishni tasdiqlaysizmi? Bu amalni bekor qilib bo'lmaydi.`}
+        title={t('categories.deleteTitle')}
+        description={t('categories.deleteDescription', { name: deleteCategory?.name_uz })}
       />
     </div>
   );
