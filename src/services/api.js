@@ -5,137 +5,159 @@ class ApiService {
   constructor() {
     this.api = axios.create({
       baseURL: API_URL,
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
     });
 
     this.api.interceptors.request.use(
       (config) => {
-        const token = localStorage.getItem("saipovauthtoken");
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
-        }
+        const token = localStorage.getItem("azrarauthtoken");
+        if (token) config.headers.Authorization = `Bearer ${token}`;
         return config;
       },
       (error) => Promise.reject(error),
     );
+
+    // 401 → avtomatik logout
+    this.api.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.status === 401) {
+          localStorage.removeItem("azrarauthtoken");
+          window.location.href = "/login";
+        }
+        return Promise.reject(error);
+      },
+    );
   }
 
   setAuthToken(token) {
-    if (token) {
-      this.api.defaults.headers.Authorization = `Bearer ${token}`;
-    } else {
-      delete this.api.defaults.headers.Authorization;
-    }
+    if (token) this.api.defaults.headers.Authorization = `Bearer ${token}`;
+    else delete this.api.defaults.headers.Authorization;
   }
 
-  // Auth endpoints
-  async login(phoneNumber, password) {
+  // ─── Auth ─────────────────────────────────────────────
+  login(phoneNumber, password) {
     return this.api.post("/auth/login", { phoneNumber, password });
   }
-
-  async getProfile() {
+  getProfile() {
     return this.api.get("/auth/profile");
   }
-
-  async changePassword(currentPassword, newPassword) {
+  changePassword(currentPassword, newPassword) {
     return this.api.post("/auth/change-password", {
       currentPassword,
       newPassword,
     });
   }
 
-  // Admin endpoints
-  async getAdmins() {
-    return this.api.get("/admin");
+  // ─── Admin ────────────────────────────────────────────
+  getAdmins(params) {
+    return this.api.get("/admin", { params });
   }
-
-  async getAdmin(id) {
+  getAdmin(id) {
     return this.api.get(`/admin/${id}`);
   }
-
-  async createAdmin(data) {
+  createAdmin(data) {
     return this.api.post("/admin", data);
   }
-
-  async updateAdmin(id, data) {
+  updateAdmin(id, data) {
     return this.api.put(`/admin/${id}`, data);
   }
-
-  async deleteAdmin(id) {
+  deleteAdmin(id) {
     return this.api.delete(`/admin/${id}`);
   }
 
-  // Product endpoints
-  async getProducts(params) {
+  // ─── Category ─────────────────────────────────────────
+  getCategories(params) {
+    return this.api.get("/categories", { params });
+  }
+  getCategory(id) {
+    return this.api.get(`/categories/${id}`);
+  }
+  createCategory(data) {
+    return this.api.post("/categories", data);
+  }
+  updateCategory(id, data) {
+    return this.api.put(`/categories/${id}`, data);
+  }
+  deleteCategory(id) {
+    return this.api.delete(`/categories/${id}`);
+  }
+
+  // ─── Product ──────────────────────────────────────────
+  getProducts(params) {
     return this.api.get("/products", { params });
   }
-
-  async getProduct(id) {
+  getProduct(id) {
     return this.api.get(`/products/${id}`);
   }
-
-  async createProduct(formData) {
+  createProduct(formData) {
     return this.api.post("/products", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   }
-
-  async updateProduct(id, formData) {
+  updateProduct(id, formData) {
     return this.api.put(`/products/${id}`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   }
-
-  async deleteProduct(id) {
+  deleteProduct(id) {
     return this.api.delete(`/products/${id}`);
   }
 
-  async updateInventory(id, stockQuantity) {
-    return this.api.patch(`/products/${id}/inventory`, { stockQuantity });
+  // ─── Order ────────────────────────────────────────────
+  getOrders(params) {
+    return this.api.get("/orders", { params });
   }
-
-  // Category endpoints
-  async getCategories() {
-    return this.api.get("/categories");
-  }
-
-  async getCategory(id) {
-    return this.api.get(`/categories/${id}`);
-  }
-
-  async createCategory(data) {
-    return this.api.post("/categories", data);
-  }
-
-  async updateCategory(id, data) {
-    return this.api.put(`/categories/${id}`, data);
-  }
-
-  async deleteCategory(id) {
-    return this.api.delete(`/categories/${id}`);
-  }
-
-  // Order endpoints
-  async getOrders(params) {
-    return this.api.get(`/orders`, { params });
-  }
-
-  async getOrder(id) {
+  getOrder(id) {
     return this.api.get(`/orders/${id}`);
   }
-
-  async createOrder(data) {
-    return this.api.post("/orders", data);
-  }
-
-  async updateOrderStatus(id, status, internalNotes) {
+  updateOrderStatus(id, status, internalNotes) {
     return this.api.put(`/orders/${id}/status`, { status, internalNotes });
   }
-
-  async cancelOrder(id, reason) {
+  cancelOrder(id, reason) {
     return this.api.put(`/orders/${id}/cancel`, { reason });
+  }
+
+  // ─── Project ──────────────────────────────────────────
+  getProjects(params) {
+    return this.api.get("/projects", { params });
+  }
+  getProject(id) {
+    return this.api.get(`/projects/${id}`);
+  }
+  createProject(formData) {
+    return this.api.post("/projects", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  }
+  updateProject(id, formData) {
+    return this.api.put(`/projects/${id}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  }
+  deleteProject(id) {
+    return this.api.delete(`/projects/${id}`);
+  }
+
+  // ─── Testimonial ──────────────────────────────────────
+  getTestimonials(params) {
+    return this.api.get("/testimonials", { params });
+  }
+  getTestimonial(id) {
+    return this.api.get(`/testimonials/${id}`);
+  }
+  createTestimonial(formData) {
+    return this.api.post("/testimonials", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  }
+  updateTestimonial(id, formData) {
+    return this.api.put(`/testimonials/${id}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  }
+  deleteTestimonial(id) {
+    return this.api.delete(`/testimonials/${id}`);
   }
 }
 

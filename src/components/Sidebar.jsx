@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Package, ShoppingCart, Users, Tag } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingCart, Users, Tag, FolderOpen, MessageSquare } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const Sidebar = () => {
@@ -8,17 +8,19 @@ const Sidebar = () => {
   const { t } = useTranslation();
 
   const navigation = [
-    { name: t('sidebar.dashboard'), href: "/dashboard", icon: LayoutDashboard },
-    { name: t('sidebar.products'), href: "/products", icon: Package },
-    { name: t('sidebar.categories'), href: "/categories", icon: Tag },
-    { name: t('sidebar.orders'), href: "/orders", icon: ShoppingCart },
-    { name: t('sidebar.admins'), href: "/admins", icon: Users },
+    { name: t("sidebar.dashboard"),    href: "/dashboard",    icon: LayoutDashboard },
+    { name: t("sidebar.products"),     href: "/products",     icon: Package },
+    { name: t("sidebar.categories"),   href: "/categories",   icon: Tag },
+    { name: t("sidebar.orders"),       href: "/orders",       icon: ShoppingCart },
+    { name: t("sidebar.projects"),     href: "/projects",     icon: FolderOpen },
+    { name: t("sidebar.testimonials"), href: "/testimonials", icon: MessageSquare },
+    { name: t("sidebar.admins"),       href: "/admins",       icon: Users },
   ];
 
   return (
     <div className="hidden md:flex md:w-64 md:flex-col">
       <div className="flex flex-col flex-grow bg-white overflow-y-auto border-r p-2">
-        <nav className="flex-1 space-y-2">
+        <nav className="flex-1 space-y-1">
           {navigation.map((item) => {
             const isActive = location.pathname === item.href;
             return (

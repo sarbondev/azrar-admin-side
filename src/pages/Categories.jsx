@@ -10,7 +10,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { apiService } from "../services/api";
 import { Plus, Edit, Trash2, Tag } from "lucide-react";
-import CategoryDialog from "../components/CategoryDialog";
+import CategoryDialog from "../components/categoryComponents/CategoryDialog";
 import DeleteConfirmDialog from "../components/DeleteConfirmDialog";
 import { useTranslation } from "react-i18next";
 

@@ -10,7 +10,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { apiService } from "../services/api";
 import { Plus, Edit, Trash2, Users, Phone, Calendar } from "lucide-react";
-import AdminDialog from "../components/AdminDialog";
+import AdminDialog from "../components/adminComponents/AdminDialog";
 import DeleteConfirmDialog from "../components/DeleteConfirmDialog";
 import { useAuth } from "../contexts/AuthContext";
 import { useTranslation } from "react-i18next";

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { LogOut, Settings } from "lucide-react";
-import ChangePasswordDialog from "./ChangePasswordDialog";
+import ChangePasswordDialog from "./adminComponents/ChangePasswordDialog";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 
@@ -34,7 +34,9 @@ const Header = () => {
     <>
       <header className="bg-white shadow-sm border-b">
         <div className="flex items-center justify-between px-6 py-4">
-          <h1 className="text-lg">{t('header.hello')}, {admin?.fullName.split(" ")[0]}!</h1>
+          <h1 className="text-lg">
+            {t("header.hello")}, {admin?.fullName.split(" ")[0]}!
+          </h1>
           <div className="flex items-center space-x-4">
             <LanguageSwitcher />
             <DropdownMenu>
@@ -64,11 +66,11 @@ const Header = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => setShowPasswordDialog(true)}>
                   <Settings className="mr-2 h-4 w-4" />
-                  <span>{t('header.changePassword')}</span>
+                  <span>{t("header.changePassword")}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={logout}>
                   <LogOut className="mr-2 h-4 w-4" />
-                  <span>{t('header.logout')}</span>
+                  <span>{t("header.logout")}</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

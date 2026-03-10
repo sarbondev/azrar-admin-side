@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { apiService } from "../services/api";
+import { apiService } from "../../services/api";
 import { Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -39,17 +39,23 @@ const CategoryDialog = ({ open, onOpenChange, category, onSuccess }) => {
     try {
       if (category) {
         await apiService.updateCategory(category._id, formData);
-        toast({ title: t('common.success'), description: t('categories.dialog.updated') });
+        toast({
+          title: t("common.success"),
+          description: t("categories.dialog.updated"),
+        });
       } else {
         await apiService.createCategory(formData);
-        toast({ title: t('common.success'), description: t('categories.dialog.created') });
+        toast({
+          title: t("common.success"),
+          description: t("categories.dialog.created"),
+        });
       }
       onSuccess();
     } catch (error) {
       toast({
-        title: t('common.error'),
+        title: t("common.error"),
         description:
-          error.response?.data?.message || t('categories.dialog.saveError'),
+          error.response?.data?.message || t("categories.dialog.saveError"),
         variant: "destructive",
       });
     } finally {
@@ -62,15 +68,17 @@ const CategoryDialog = ({ open, onOpenChange, category, onSuccess }) => {
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>
-            {category ? t('categories.dialog.editTitle') : t('categories.dialog.addTitle')}
+            {category
+              ? t("categories.dialog.editTitle")
+              : t("categories.dialog.addTitle")}
           </DialogTitle>
           <DialogDescription>
-            {t('categories.dialog.description')}
+            {t("categories.dialog.description")}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid gap-2">
-            <Label htmlFor="name_uz">{t('categories.dialog.nameUz')}</Label>
+            <Label htmlFor="name_uz">{t("categories.dialog.nameUz")}</Label>
             <Input
               id="name_uz"
               value={formData.name_uz}
@@ -81,7 +89,7 @@ const CategoryDialog = ({ open, onOpenChange, category, onSuccess }) => {
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="name_ru">{t('categories.dialog.nameRu')}</Label>
+            <Label htmlFor="name_ru">{t("categories.dialog.nameRu")}</Label>
             <Input
               id="name_ru"
               value={formData.name_ru}
@@ -97,11 +105,11 @@ const CategoryDialog = ({ open, onOpenChange, category, onSuccess }) => {
               variant="outline"
               onClick={() => onOpenChange(false)}
             >
-              {t('common.cancel')}
+              {t("common.cancel")}
             </Button>
             <Button type="submit" disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {t('common.save')}
+              {t("common.save")}
             </Button>
           </DialogFooter>
         </form>

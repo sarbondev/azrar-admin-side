@@ -23,13 +23,18 @@
     "confirmDeleteTitle": "Подтвердите удаление",
     "confirmDeleteDescription": "Это действие нельзя отменить.",
     "fillAllFields": "Пожалуйста, заполните все поля правильно",
-    "requiredFields": "Заполните все обязательные поля"
+    "requiredFields": "Заполните все обязательные поля",
+    "back": "Назад",
+    "noImage": "Нет изображения",
+    "createdAt": "Создано"
   },
   "sidebar": {
     "dashboard": "Dashboard",
     "products": "Продукты",
     "categories": "Категории",
     "orders": "Заказы",
+    "projects": "Проекты",
+    "testimonials": "Отзывы",
     "admins": "Админы"
   },
   "header": {
@@ -151,10 +156,84 @@
     "notFound": "Заказы не найдены",
     "noOrdersYet": "Заказов пока нет или по вашему запросу ничего не найдено.",
     "loadError": "Ошибка при загрузке заказов",
+    "orderNumber": "Номер заказа",
+    "customer": "Клиент",
+    "totalPrice": "Итого",
+    "date": "Дата",
+    "internalNotes": "Внутренние заметки",
+    "cancelReason": "Причина отмены",
     "statusOptions": {
       "in_process": "В процессе",
       "delivered": "Доставлено",
       "cancelled": "Отменено"
+    },
+    "statusUpdate": "Статус обновлён",
+    "statusUpdateError": "Ошибка при обновлении статуса",
+    "cancelSuccess": "Заказ отменён",
+    "cancelError": "Ошибка при отмене заказа"
+  },
+  "projects": {
+    "title": "Проекты",
+    "addProject": "Новый проект",
+    "manage": "Управляйте проектами и добавляйте новые",
+    "notFound": "Проекты не найдены",
+    "noProjectsYet": "Проектов пока нет.",
+    "addFirstProject": "Добавьте первый проект",
+    "deleteTitle": "Удалить проект",
+    "deleteDescription": "Вы уверены, что хотите удалить \"{{name}}\"? Это действие нельзя отменить.",
+    "deleted": "Проект успешно удалён",
+    "deleteError": "Ошибка при удалении проекта",
+    "loadError": "Ошибка при загрузке проектов",
+    "searchPlaceholder": "Поиск проекта...",
+    "fields": {
+      "title": "Заголовок",
+      "address": "Адрес",
+      "solution": "Решение",
+      "result": "Результат",
+      "images": "Изображения"
+    },
+    "dialog": {
+      "editTitle": "Редактировать проект",
+      "addTitle": "Добавить новый проект",
+      "description": "Введите данные проекта.",
+      "titlePlaceholder": "Заголовок проекта",
+      "addressPlaceholder": "Адрес проекта",
+      "solutionPlaceholder": "Применённое решение...",
+      "resultPlaceholder": "Достигнутый результат...",
+      "updated": "Проект успешно обновлён",
+      "created": "Проект успешно создан",
+      "saveError": "Ошибка при сохранении проекта"
+    }
+  },
+  "testimonials": {
+    "title": "Отзывы",
+    "addTestimonial": "Новый отзыв",
+    "manage": "Управление отзывами клиентов",
+    "notFound": "Отзывы не найдены",
+    "noTestimonialsYet": "Отзывов пока нет.",
+    "addFirstTestimonial": "Добавьте первый отзыв",
+    "deleteTitle": "Удалить отзыв",
+    "deleteDescription": "Вы уверены, что хотите удалить отзыв от \"{{name}}\"? Это действие нельзя отменить.",
+    "deleted": "Отзыв успешно удалён",
+    "deleteError": "Ошибка при удалении отзыва",
+    "loadError": "Ошибка при загрузке отзывов",
+    "searchPlaceholder": "Поиск по имени или телефону...",
+    "fields": {
+      "clientName": "Имя клиента",
+      "clientPhone": "Телефон клиента",
+      "clientImage": "Фото клиента",
+      "description": "Текст отзыва"
+    },
+    "dialog": {
+      "editTitle": "Редактировать отзыв",
+      "addTitle": "Добавить новый отзыв",
+      "description": "Введите данные отзыва.",
+      "clientNamePlaceholder": "Полное имя клиента",
+      "clientPhonePlaceholder": "+998 90 123-45-67",
+      "descriptionPlaceholder": "Отзыв клиента...",
+      "updated": "Отзыв успешно обновлён",
+      "created": "Отзыв успешно создан",
+      "saveError": "Ошибка при сохранении отзыва"
     }
   },
   "admins": {

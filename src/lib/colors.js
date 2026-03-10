@@ -15,7 +15,7 @@ export const COLORS_WITH_LANGS = [
 
 export const getColorCode = (colorName) => {
   const color = COLORS_WITH_LANGS.find(
-    (c) => c.uz === colorName || c.ru === colorName
+    (c) => c.uz === colorName || c.ru === colorName,
   );
   return color ? color.code : "#CCCCCC";
 };

@@ -12,9 +12,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { apiService } from "../services/api";
+import { apiService } from "../../services/api";
 import { Loader2, Upload, X } from "lucide-react";
-import ColorPicker from "./ColorPicker";
+import ColorPicker from "../ColorPicker";
 import { useTranslation } from "react-i18next";
 
 const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
@@ -44,8 +44,8 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
         setCategories(response.data.data.categories || []);
       } catch (error) {
         toast({
-          title: t('common.error'),
-          description: t('products.categoryLoadError'),
+          title: t("common.error"),
+          description: t("products.categoryLoadError"),
           variant: "destructive",
         });
       } finally {
@@ -142,23 +142,23 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
       if (product) {
         await apiService.updateProduct(product._id, submitData);
         toast({
-          title: t('common.success'),
-          description: t('products.dialog.updated'),
+          title: t("common.success"),
+          description: t("products.dialog.updated"),
         });
       } else {
         await apiService.createProduct(submitData);
         toast({
-          title: t('common.success'),
-          description: t('products.dialog.created'),
+          title: t("common.success"),
+          description: t("products.dialog.created"),
         });
       }
 
       onSuccess();
     } catch (error) {
       toast({
-        title: t('common.error'),
+        title: t("common.error"),
         description:
-          error.response?.data?.message || t('products.dialog.saveError'),
+          error.response?.data?.message || t("products.dialog.saveError"),
         variant: "destructive",
       });
     } finally {
@@ -171,10 +171,12 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            {product ? t('products.dialog.editTitle') : t('products.dialog.addTitle')}
+            {product
+              ? t("products.dialog.editTitle")
+              : t("products.dialog.addTitle")}
           </DialogTitle>
           <DialogDescription>
-            {t('products.dialog.description')}
+            {t("products.dialog.description")}
           </DialogDescription>
         </DialogHeader>
 
@@ -182,7 +184,7 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
           <div className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="translations.uz.title">
-                {t('products.dialog.nameUz')}
+                {t("products.dialog.nameUz")}
               </Label>
               <Input
                 id="translations.uz.title"
@@ -200,7 +202,7 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="title_ru">{t('products.dialog.nameRu')}</Label>
+              <Label htmlFor="title_ru">{t("products.dialog.nameRu")}</Label>
               <Input
                 id="title_ru"
                 value={formData.translations.ru.title}
@@ -218,7 +220,9 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="description_uz">{t('products.dialog.descriptionUz')}</Label>
+              <Label htmlFor="description_uz">
+                {t("products.dialog.descriptionUz")}
+              </Label>
               <Textarea
                 id="description_uz"
                 value={formData.translations.uz.description}
@@ -227,7 +231,10 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
                     ...prev,
                     translations: {
                       ...prev.translations,
-                      uz: { ...prev.translations.uz, description: e.target.value },
+                      uz: {
+                        ...prev.translations.uz,
+                        description: e.target.value,
+                      },
                     },
                   }))
                 }
@@ -236,7 +243,9 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="description_ru">{t('products.dialog.descriptionRu')}</Label>
+              <Label htmlFor="description_ru">
+                {t("products.dialog.descriptionRu")}
+              </Label>
               <Textarea
                 id="description_ru"
                 value={formData.translations.ru.description}
@@ -245,7 +254,10 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
                     ...prev,
                     translations: {
                       ...prev.translations,
-                      ru: { ...prev.translations.ru, description: e.target.value },
+                      ru: {
+                        ...prev.translations.ru,
+                        description: e.target.value,
+                      },
                     },
                   }))
                 }
@@ -256,19 +268,26 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="category">{t('products.dialog.category')}</Label>
+                <Label htmlFor="category">
+                  {t("products.dialog.category")}
+                </Label>
                 <select
                   id="category"
                   value={formData.category}
                   onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, category: e.target.value }))
+                    setFormData((prev) => ({
+                      ...prev,
+                      category: e.target.value,
+                    }))
                   }
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   disabled={categoriesLoading}
                   required
                 >
                   <option value="">
-                    {categoriesLoading ? t('products.dialog.categoryLoading') : t('products.dialog.selectCategory')}
+                    {categoriesLoading
+                      ? t("products.dialog.categoryLoading")
+                      : t("products.dialog.selectCategory")}
                   </option>
                   {categories.map((cat) => (
                     <option key={cat._id} value={cat._id}>
@@ -279,7 +298,7 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
               </div>
 
               <div className="grid gap-2">
-                <Label htmlFor="price">{t('products.dialog.price')}</Label>
+                <Label htmlFor="price">{t("products.dialog.price")}</Label>
                 <Input
                   id="price"
                   type="number"
@@ -302,7 +321,7 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
             />
 
             <div className="grid gap-2">
-              <Label htmlFor="images">{t('products.dialog.images')}</Label>
+              <Label htmlFor="images">{t("products.dialog.images")}</Label>
               <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
                 <input
                   id="images"
@@ -318,10 +337,10 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
                 >
                   <Upload className="h-8 w-8 text-gray-400 mb-2" />
                   <span className="text-sm text-gray-600">
-                    {t('products.dialog.selectImages')}
+                    {t("products.dialog.selectImages")}
                   </span>
                   <span className="text-xs text-gray-400 mt-1">
-                    {t('products.dialog.imageFormats')}
+                    {t("products.dialog.imageFormats")}
                   </span>
                 </label>
               </div>
@@ -349,7 +368,7 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
 
               {selectedFiles.length > 0 && (
                 <div className="space-y-2">
-                  <Label>{t('products.dialog.selectedImages')}</Label>
+                  <Label>{t("products.dialog.selectedImages")}</Label>
 
                   {selectedPreviews.length > 0 && (
                     <div className="grid grid-cols-3 gap-2 mb-2">
@@ -382,11 +401,11 @@ const ProductDialog = ({ open, onOpenChange, product, onSuccess }) => {
               variant="outline"
               onClick={() => onOpenChange(false)}
             >
-              {t('common.cancel')}
+              {t("common.cancel")}
             </Button>
             <Button type="submit" disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {product ? t('common.update') : t('common.create')}
+              {product ? t("common.update") : t("common.create")}
             </Button>
           </DialogFooter>
         </form>

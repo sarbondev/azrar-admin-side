@@ -1,4 +1,4 @@
-import { ProductCard } from "../ProductCard";
+import { ProductCard } from "./ProductCard";
 
 export const ProductList = ({
   products,

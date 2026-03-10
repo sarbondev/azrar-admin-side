@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Loader2, Edit } from "lucide-react";
-import ProductDialog from "../components/ProductDialog";
+import ProductDialog from "../components/productComponents/ProductDialog";
 import { getColorCode } from "@/lib/colors";
 
 const ProductDetail = () => {

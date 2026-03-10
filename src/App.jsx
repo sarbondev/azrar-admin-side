@@ -12,6 +12,8 @@ import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import Categories from "./pages/Categories";
 import Orders from "./pages/Orders";
+import Projects from "./pages/Projects";
+import Testimonials from "./pages/Testimonials";
 import Admins from "./pages/Admins";
 import Layout from "./components/Layout";
 import "./App.css";
@@ -22,57 +24,31 @@ const ProtectedLayout = () => (
   </ProtectedRoute>
 );
 
-const ProtectedDetailLayout = ({ children }) => (
-  <ProtectedRoute>{children}</ProtectedRoute>
-);
-
 const router = createBrowserRouter([
-  {
-    path: "/login",
-    element: <Login />,
-  },
+  { path: "/login", element: <Login /> },
   {
     path: "/",
     element: <ProtectedLayout />,
     children: [
-      {
-        index: true,
-        element: <Navigate to="/dashboard" replace />,
-      },
-      {
-        path: "dashboard",
-        element: <Dashboard />,
-      },
-      {
-        path: "products",
-        element: <Products />,
-      },
-      {
-        path: "categories",
-        element: <Categories />,
-      },
-      {
-        path: "orders",
-        element: <Orders />,
-      },
-      {
-        path: "admins",
-        element: <Admins />,
-      },
+      { index: true, element: <Navigate to="/dashboard" replace /> },
+      { path: "dashboard", element: <Dashboard /> },
+      { path: "products", element: <Products /> },
+      { path: "categories", element: <Categories /> },
+      { path: "orders", element: <Orders /> },
+      { path: "projects", element: <Projects /> },
+      { path: "testimonials", element: <Testimonials /> },
+      { path: "admins", element: <Admins /> },
     ],
   },
   {
     path: "/products/:id",
     element: (
-      <ProtectedDetailLayout>
+      <ProtectedRoute>
         <ProductDetail />
-      </ProtectedDetailLayout>
+      </ProtectedRoute>
     ),
   },
-  {
-    path: "*",
-    element: <Navigate to="/dashboard" replace />,
-  },
+  { path: "*", element: <Navigate to="/dashboard" replace /> },
 ]);
 
 function App() {

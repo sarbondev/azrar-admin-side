@@ -5,22 +5,24 @@ const LanguageSwitcher = () => {
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
+    localStorage.setItem("adminLang", lng);
   };
 
   return (
-    <div className="flex space-x-2">
-      <button
-        onClick={() => changeLanguage("uz")}
-        className={`px-2 py-1 ${i18n.language === "uz" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
-      >
-        UZ
-      </button>
-      <button
-        onClick={() => changeLanguage("ru")}
-        className={`px-2 py-1 ${i18n.language === "ru" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
-      >
-        RU
-      </button>
+    <div className="flex space-x-1 rounded-md border overflow-hidden">
+      {["uz", "ru"].map((lng) => (
+        <button
+          key={lng}
+          onClick={() => changeLanguage(lng)}
+          className={`px-3 py-1 text-sm font-medium transition-colors ${
+            i18n.language === lng
+              ? "bg-[#173F5F] text-white"
+              : "bg-white text-gray-600 hover:bg-gray-50"
+          }`}
+        >
+          {lng.toUpperCase()}
+        </button>
+      ))}
     </div>
   );
 };

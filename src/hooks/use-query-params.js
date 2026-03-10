@@ -3,12 +3,12 @@ import { useSearchParams } from "react-router-dom";
 
 export const useQueryParams = (initialState = {}) => {
   const [searchParams, setSearchParams] = useSearchParams(
-    new URLSearchParams(initialState).toString()
+    new URLSearchParams(initialState).toString(),
   );
 
   const queryParams = useMemo(
     () => Object.fromEntries(searchParams.entries()),
-    [searchParams]
+    [searchParams],
   );
 
   const update = (params) => {

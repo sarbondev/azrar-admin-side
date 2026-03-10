@@ -23,13 +23,18 @@
     "confirmDeleteTitle": "O'chirishni tasdiqlang",
     "confirmDeleteDescription": "Bu amalni bekor qilib bo'lmaydi.",
     "fillAllFields": "Iltimos, barcha maydonlarni to'g'ri to'ldiring",
-    "requiredFields": "Barcha majburiy maydonlarni to'ldiring"
+    "requiredFields": "Barcha majburiy maydonlarni to'ldiring",
+    "back": "Orqaga",
+    "noImage": "Rasm yo'q",
+    "createdAt": "Yaratilgan"
   },
   "sidebar": {
     "dashboard": "Dashboard",
     "products": "Mahsulotlar",
     "categories": "Kategoriyalar",
     "orders": "Buyurtmalar",
+    "projects": "Loyihalar",
+    "testimonials": "Sharhlar",
     "admins": "Adminlar"
   },
   "header": {
@@ -151,10 +156,84 @@
     "notFound": "Buyurtmalar topilmadi",
     "noOrdersYet": "Hozircha buyurtmalar yo'q yoki qidiruv natijasida hech narsa topilmadi.",
     "loadError": "Buyurtmalarni yuklashda xatolik yuz berdi",
+    "orderNumber": "Buyurtma raqami",
+    "customer": "Mijoz",
+    "totalPrice": "Jami narx",
+    "date": "Sana",
+    "internalNotes": "Ichki izoh",
+    "cancelReason": "Bekor qilish sababi",
     "statusOptions": {
       "in_process": "Jarayonda",
       "delivered": "Yetkazilgan",
       "cancelled": "Bekor qilingan"
+    },
+    "statusUpdate": "Holat yangilandi",
+    "statusUpdateError": "Holatni yangilashda xatolik",
+    "cancelSuccess": "Buyurtma bekor qilindi",
+    "cancelError": "Buyurtmani bekor qilishda xatolik"
+  },
+  "projects": {
+    "title": "Loyihalar",
+    "addProject": "Yangi loyiha",
+    "manage": "Loyihalarni boshqaring va yangilarini qo'shing",
+    "notFound": "Loyihalar topilmadi",
+    "noProjectsYet": "Hozircha loyihalar yo'q.",
+    "addFirstProject": "Birinchi loyihani qo'shing",
+    "deleteTitle": "Loyihani o'chirish",
+    "deleteDescription": "\"{{name}}\" loyihasini o'chirishni tasdiqlaysizmi? Bu amalni bekor qilib bo'lmaydi.",
+    "deleted": "Loyiha muvaffaqiyatli o'chirildi",
+    "deleteError": "Loyihani o'chirishda xatolik yuz berdi",
+    "loadError": "Loyihalarni yuklashda xatolik yuz berdi",
+    "searchPlaceholder": "Loyiha qidirish...",
+    "fields": {
+      "title": "Sarlavha",
+      "address": "Manzil",
+      "solution": "Yechim",
+      "result": "Natija",
+      "images": "Rasmlar"
+    },
+    "dialog": {
+      "editTitle": "Loyihani tahrirlash",
+      "addTitle": "Yangi loyiha qo'shish",
+      "description": "Loyiha ma'lumotlarini kiriting.",
+      "titlePlaceholder": "Loyiha sarlavhasi",
+      "addressPlaceholder": "Loyiha manzili",
+      "solutionPlaceholder": "Qo'llanilgan yechim...",
+      "resultPlaceholder": "Erishilgan natija...",
+      "updated": "Loyiha muvaffaqiyatli yangilandi",
+      "created": "Loyiha muvaffaqiyatli yaratildi",
+      "saveError": "Loyihani saqlashda xatolik"
+    }
+  },
+  "testimonials": {
+    "title": "Sharhlar",
+    "addTestimonial": "Yangi sharh",
+    "manage": "Mijoz sharhlarini boshqaring",
+    "notFound": "Sharhlar topilmadi",
+    "noTestimonialsYet": "Hozircha sharhlar yo'q.",
+    "addFirstTestimonial": "Birinchi sharhni qo'shing",
+    "deleteTitle": "Sharhni o'chirish",
+    "deleteDescription": "\"{{name}}\" sharhini o'chirishni tasdiqlaysizmi? Bu amalni bekor qilib bo'lmaydi.",
+    "deleted": "Sharh muvaffaqiyatli o'chirildi",
+    "deleteError": "Sharhni o'chirishda xatolik yuz berdi",
+    "loadError": "Sharhlarni yuklashda xatolik yuz berdi",
+    "searchPlaceholder": "Mijoz nomi yoki telefon qidirish...",
+    "fields": {
+      "clientName": "Mijoz ismi",
+      "clientPhone": "Mijoz telefoni",
+      "clientImage": "Mijoz rasmi",
+      "description": "Sharh matni"
+    },
+    "dialog": {
+      "editTitle": "Sharhni tahrirlash",
+      "addTitle": "Yangi sharh qo'shish",
+      "description": "Sharh ma'lumotlarini kiriting.",
+      "clientNamePlaceholder": "Mijoz to'liq ismi",
+      "clientPhonePlaceholder": "+998 90 123-45-67",
+      "descriptionPlaceholder": "Mijoz sharhi...",
+      "updated": "Sharh muvaffaqiyatli yangilandi",
+      "created": "Sharh muvaffaqiyatli yaratildi",
+      "saveError": "Sharhni saqlashda xatolik"
     }
   },
   "admins": {
