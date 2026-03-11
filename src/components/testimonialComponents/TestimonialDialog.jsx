@@ -1,6 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import {
-  Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,8 +24,10 @@ const TestimonialDialog = ({ open, onOpenChange, testimonial, onSuccess }) => {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [form, setForm] = useState({
-    clientName: "",
-    clientPhone: "+998",
+    client: {
+      fullName: "",
+      phoneNumber: "+998",
+    },
     description: "",
   });
 
@@ -31,21 +37,33 @@ const TestimonialDialog = ({ open, onOpenChange, testimonial, onSuccess }) => {
     if (open) {
       if (testimonial) {
         setForm({
-          clientName: testimonial.client?.fullName || "",
-          clientPhone: testimonial.client?.phoneNumber || "+998",
+          client: {
+            fullName: testimonial.client?.fullName || "",
+            phoneNumber: testimonial.client?.phoneNumber || "+998",
+          },
           description: testimonial.description || "",
         });
         setImagePreview(testimonial.client?.image || null);
       } else {
-        setForm({ clientName: "", clientPhone: "+998", description: "" });
+        setForm({
+          client: { fullName: "", phoneNumber: "+998" },
+          description: "",
+        });
         setImagePreview(null);
       }
       setImageFile(null);
     }
   }, [open, testimonial]);
 
-  const handleChange = (e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleClientChange = (e) => {
+    setForm((prev) => ({
+      ...prev,
+      client: { ...prev.client, [e.target.name]: e.target.value },
+    }));
+  };
+
+  const handleDescriptionChange = (e) => {
+    setForm((prev) => ({ ...prev, description: e.target.value }));
   };
 
   const handleFileChange = (e) => {
@@ -63,32 +81,57 @@ const TestimonialDialog = ({ open, onOpenChange, testimonial, onSuccess }) => {
   };
 
   const handleSubmit = async () => {
-    const { clientName, clientPhone, description } = form;
-    if (!clientName.trim() || !clientPhone.trim() || !description.trim()) {
-      toast({ title: t("common.error"), description: t("common.requiredFields"), variant: "destructive" });
+    const { client, description } = form;
+
+    if (
+      !client.fullName.trim() ||
+      !client.phoneNumber.trim() ||
+      !description.trim()
+    ) {
+      toast({
+        title: t("common.error"),
+        description: t("common.requiredFields"),
+        variant: "destructive",
+      });
       return;
     }
 
     setLoading(true);
     try {
       const formData = new FormData();
-      formData.append("client[fullName]", clientName.trim());
-      formData.append("client[phoneNumber]", clientPhone.trim());
+      formData.append(
+        "client",
+        JSON.stringify({
+          fullName: client.fullName.trim(),
+          phoneNumber: client.phoneNumber.trim(),
+        }),
+      );
       formData.append("description", description.trim());
       if (imageFile) formData.append("image", imageFile);
 
       if (isEdit) {
         await apiService.updateTestimonial(testimonial._id, formData);
-        toast({ title: t("common.success"), description: t("testimonials.dialog.updated") });
+        toast({
+          title: t("common.success"),
+          description: t("testimonials.dialog.updated"),
+        });
       } else {
         await apiService.createTestimonial(formData);
-        toast({ title: t("common.success"), description: t("testimonials.dialog.created") });
+        toast({
+          title: t("common.success"),
+          description: t("testimonials.dialog.created"),
+        });
       }
       onSuccess();
     } catch (error) {
+      const errors = error.response?.data?.errors;
+      const message = error.response?.data?.message;
+
       toast({
         title: t("common.error"),
-        description: error.response?.data?.message || t("testimonials.dialog.saveError"),
+        description: errors?.length
+          ? errors.map((e) => `• ${e.msg}`).join("\n")
+          : message || t("testimonials.dialog.saveError"),
         variant: "destructive",
       });
     } finally {
@@ -101,19 +144,26 @@ const TestimonialDialog = ({ open, onOpenChange, testimonial, onSuccess }) => {
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>
-            {isEdit ? t("testimonials.dialog.editTitle") : t("testimonials.dialog.addTitle")}
+            {isEdit
+              ? t("testimonials.dialog.editTitle")
+              : t("testimonials.dialog.addTitle")}
           </DialogTitle>
-          <DialogDescription>{t("testimonials.dialog.description")}</DialogDescription>
+          <DialogDescription>
+            {t("testimonials.dialog.description")}
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-2">
-          {/* Client image */}
           <div className="space-y-2">
             <Label>{t("testimonials.fields.clientImage")}</Label>
             <div className="flex items-center gap-4">
               {imagePreview ? (
                 <div className="relative w-16 h-16 rounded-full overflow-hidden border group">
-                  <img src={imagePreview} alt="" className="w-full h-full object-cover" />
+                  <img
+                    src={imagePreview}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
                   <button
                     type="button"
                     onClick={removeImage}
@@ -127,10 +177,21 @@ const TestimonialDialog = ({ open, onOpenChange, testimonial, onSuccess }) => {
                   <Upload className="w-5 h-5 text-gray-400" />
                 </div>
               )}
-              <Button type="button" variant="outline" size="sm" onClick={() => fileInputRef.current?.click()}>
-                {t("common.images")} tanlash
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                {t("testimonials.fields.clientImage")}
               </Button>
-              <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleFileChange}
+              />
             </div>
           </div>
 
@@ -138,9 +199,9 @@ const TestimonialDialog = ({ open, onOpenChange, testimonial, onSuccess }) => {
           <div className="space-y-2">
             <Label>{t("testimonials.fields.clientName")} *</Label>
             <Input
-              name="clientName"
-              value={form.clientName}
-              onChange={handleChange}
+              name="fullName"
+              value={form.client.fullName}
+              onChange={handleClientChange}
               placeholder={t("testimonials.dialog.clientNamePlaceholder")}
             />
           </div>
@@ -150,9 +211,14 @@ const TestimonialDialog = ({ open, onOpenChange, testimonial, onSuccess }) => {
             <Label>{t("testimonials.fields.clientPhone")} *</Label>
             <IMaskInput
               mask="+998 (00) 000-00-00"
-              value={form.clientPhone}
+              value={form.client.phoneNumber}
               unmask={false}
-              onAccept={(value) => setForm((prev) => ({ ...prev, clientPhone: value }))}
+              onAccept={(value) =>
+                setForm((prev) => ({
+                  ...prev,
+                  client: { ...prev.client, phoneNumber: value },
+                }))
+              }
               lazy={false}
               autofix={true}
               placeholder="+998 (90) 123-45-67"
@@ -166,7 +232,7 @@ const TestimonialDialog = ({ open, onOpenChange, testimonial, onSuccess }) => {
             <Textarea
               name="description"
               value={form.description}
-              onChange={handleChange}
+              onChange={handleDescriptionChange}
               placeholder={t("testimonials.dialog.descriptionPlaceholder")}
               rows={4}
             />
@@ -174,7 +240,11 @@ const TestimonialDialog = ({ open, onOpenChange, testimonial, onSuccess }) => {
         </div>
 
         <div className="flex justify-end gap-3 pt-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            disabled={loading}
+          >
             {t("common.cancel")}
           </Button>
           <Button onClick={handleSubmit} disabled={loading}>
