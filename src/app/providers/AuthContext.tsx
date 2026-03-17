@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type ReactNode,
+} from "react";
 import { authApi } from "@/entities/auth/api/authApi";
 import type { AdminEntity, LoginResult } from "@/entities/auth/model/types";
 import { TOKEN_KEY } from "@/shared/config/constants";
@@ -9,7 +15,10 @@ interface AuthContextValue {
   isAuthenticated: boolean;
   login: (phoneNumber: string, password: string) => Promise<LoginResult>;
   logout: () => void;
-  changePassword: (currentPassword: string, newPassword: string) => Promise<unknown>;
+  changePassword: (
+    currentPassword: string,
+    newPassword: string,
+  ) => Promise<unknown>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -24,7 +33,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [admin, setAdmin] = useState<AdminEntity | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const login = async (phoneNumber: string, password: string): Promise<LoginResult> => {
+  const login = async (
+    phoneNumber: string,
+    password: string,
+  ): Promise<LoginResult> => {
     try {
       const res = await authApi.login(phoneNumber, password);
       const { success, data, message } = res.data;
@@ -36,7 +48,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return { success: false, message: message ?? "Login xatoligi" };
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message?: string } } };
-      return { success: false, message: error.response?.data?.message ?? "Login xatoligi" };
+      return {
+        success: false,
+        message: error.response?.data?.message ?? "Login xatoligi",
+      };
     }
   };
 
@@ -50,10 +65,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const token = localStorage.getItem(TOKEN_KEY);
-    if (!token) { setLoading(false); return; }
-    authApi.getProfile()
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+    authApi
+      .getProfile()
       .then((res) => {
-        if (res.data.success && res.data.data?.admin) setAdmin(res.data.data.admin);
+        if (res.data.success && res.data.data?.admin)
+          setAdmin(res.data.data.admin);
         else logout();
       })
       .catch(logout)
@@ -62,7 +82,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ admin, loading, isAuthenticated: !!admin, login, logout, changePassword }}>
+    <AuthContext.Provider
+      value={{
+        admin,
+        loading,
+        isAuthenticated: !!admin,
+        login,
+        logout,
+        changePassword,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -12,7 +12,9 @@ import { TestimonialsPage } from "@/pages/testimonials";
 import { AdminsPage } from "@/pages/admins";
 
 const ProtectedLayout = () => (
-  <ProtectedRoute><Layout /></ProtectedRoute>
+  <ProtectedRoute>
+    <Layout />
+  </ProtectedRoute>
 );
 
 export const router = createBrowserRouter([
@@ -24,6 +26,7 @@ export const router = createBrowserRouter([
       { index: true, element: <Navigate to="/dashboard" replace /> },
       { path: "dashboard", element: <DashboardPage /> },
       { path: "products", element: <ProductsPage /> },
+      { path: "products/:id", element: <ProductDetailPage /> },
       { path: "categories", element: <CategoriesPage /> },
       { path: "orders", element: <OrdersPage /> },
       { path: "projects", element: <ProjectsPage /> },
@@ -32,8 +35,11 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/products/:id",
-    element: <ProtectedRoute><ProductDetailPage /></ProtectedRoute>,
+    element: (
+      <ProtectedRoute>
+        <ProductDetailPage />
+      </ProtectedRoute>
+    ),
   },
   { path: "*", element: <Navigate to="/dashboard" replace /> },
 ]);

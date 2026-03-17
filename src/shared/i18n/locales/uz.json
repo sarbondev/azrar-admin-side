@@ -26,7 +26,8 @@
     "requiredFields": "Barcha majburiy maydonlarni to'ldiring",
     "back": "Orqaga",
     "noImage": "Rasm yo'q",
-    "createdAt": "Yaratilgan"
+    "createdAt": "Yaratilgan",
+    "clearFilter": "Filterni tozalash"
   },
   "sidebar": {
     "dashboard": "Dashboard",
@@ -104,9 +105,14 @@
     "deleteError": "Mahsulotni o'chirishda xatolik yuz berdi",
     "loadError": "Mahsulotlarni yuklashda xatolik yuz berdi",
     "categoryLoadError": "Kategoriyalarni yuklashda xatolik yuz berdi",
+    "detail": {
+      "title": "Mahsulot tafsilotlari",
+      "description": "Mahsulot haqidagi batafsil ma'lumot"
+    },
     "dialog": {
       "editTitle": "Mahsulotni tahrirlash",
       "addTitle": "Yangi mahsulot qo'shish",
+      "addCustomColor": "Rang qo'shish",
       "description": "Mahsulot ma'lumotlarini kiriting. Barcha majburiy maydonlarni to'ldiring.",
       "nameUz": "Mahsulot nomi o'zbekcha*",
       "nameRu": "Mahsulot nomi ruscha*",
@@ -222,7 +228,8 @@
       "clientName": "Mijoz ismi",
       "clientPhone": "Mijoz telefoni",
       "clientImage": "Mijoz rasmi",
-      "description": "Sharh matni"
+      "description": "Sharh matni",
+      "selectImage": "Mijoz rasmini tanlang"
     },
     "dialog": {
       "editTitle": "Sharhni tahrirlash",
