@@ -5,7 +5,6 @@ import { ProductDialog } from "@/features/product-crud/ui/ProductDialog";
 import { Button } from "@/shared/ui/button";
 import { Badge } from "@/shared/ui/badge";
 import { useToast } from "@/shared/lib/useToast";
-import { getColorCode } from "@/shared/lib/colors";
 import { ArrowLeft, Loader2, Edit } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { Lang, ProductEntity } from "@/entities/product/model/types";
@@ -16,7 +15,7 @@ export const ProductDetailPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t, i18n } = useTranslation();
-  const currentLang = i18n.language || "uz";
+  const currentLang = i18n.language as Lang;
   const [product, setProduct] = useState<ProductEntity | null>(null);
   const [loading, setLoading] = useState(true);
   const [imgIndex, setImgIndex] = useState(0);
@@ -147,9 +146,11 @@ export const ProductDetailPage = () => {
                     >
                       <div
                         className="w-6 h-6 rounded-full border-2 border-gray-300"
-                        style={{ backgroundColor: getColorCode(color) }}
+                        style={{ backgroundColor: color.hexCode }}
                       />
-                      <span className="font-medium text-gray-700">{color}</span>
+                      <span className="font-medium text-gray-700">
+                        {color.label[currentLang]}
+                      </span>
                     </div>
                   ))}
                 </div>

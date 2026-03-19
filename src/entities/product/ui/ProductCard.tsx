@@ -9,7 +9,6 @@ import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
 import { Edit, Trash2, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { getColorCode } from "@/shared/lib/colors";
 import { useTranslation } from "react-i18next";
 import type { Lang, ProductEntity } from "../model/types";
 
@@ -88,9 +87,11 @@ export const ProductCard = ({ product, onEdit, onDelete }: Props) => {
                 >
                   <div
                     className="w-4 h-4 rounded-full border border-gray-300"
-                    style={{ backgroundColor: getColorCode(color) }}
+                    style={{ backgroundColor: color.hexCode ?? "#ccc" }}
                   />
-                  <span className="text-xs text-gray-600">{color}</span>
+                  <span className="text-xs text-gray-600">
+                    {color.label?.[lang] ?? color.label?.uz ?? ""}
+                  </span>
                 </div>
               ))}
             </div>
