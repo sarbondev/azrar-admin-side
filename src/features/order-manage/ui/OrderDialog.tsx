@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -20,9 +19,11 @@ import {
   Package,
   User,
   ShoppingBag,
+  ScrollText,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { OrderEntity, OrderStatus } from "@/entities/order/model/types";
+import { Lang } from "@/entities/project/model/types";
 
 interface Props {
   open: boolean;
@@ -44,10 +45,11 @@ export const OrderDialog = ({
   onSuccess,
 }: Props) => {
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [newStatus, setNewStatus] = useState<OrderStatus | "">("");
   const [notes, setNotes] = useState("");
+  const currentLanguage = i18n.language as Lang;
 
   if (!order) return null;
 
@@ -93,11 +95,8 @@ export const OrderDialog = ({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Package className="h-5 w-5" />
-            {t("orders.dialog.title")} #{order.orderNumber}
+            {t("orders.orderId")} #{order.orderNumber}
           </DialogTitle>
-          <DialogDescription>
-            {t("orders.dialog.description")}
-          </DialogDescription>
         </DialogHeader>
         <div className="space-y-6">
           <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
@@ -138,41 +137,51 @@ export const OrderDialog = ({
               )}
             </div>
           </div>
+          {order.internalNotes && (
+            <div className="space-y-3">
+              <h3 className="text-lg font-semibold flex items-center gap-2">
+                <ScrollText className="h-5 w-5" />
+                {t("orders.internalNotes")}
+              </h3>
+              <div className="border-t-2 pt-3 flex justify-between items-center">
+                <p className="text-md font-bold">{order.internalNotes}</p>
+              </div>
+            </div>
+          )}
           <div className="space-y-3">
             <h3 className="text-lg font-semibold flex items-center gap-2">
               <ShoppingBag className="h-5 w-5" />
               {t("orders.products")} ({order.products?.length ?? 0})
             </h3>
-            {order.products?.map((item, i) => (
+            {order.products?.map((product, i) => (
               <div key={i} className="border rounded-lg p-4">
                 <div className="flex gap-4">
-                  {item.product?.images?.[0] && (
+                  {product?.images?.[0] && (
                     <img
-                      src={item.product.images[0]}
-                      alt=""
+                      src={product.images[0]}
+                      alt={product.translations[currentLanguage]?.title}
                       className="w-20 h-20 object-cover rounded-lg flex-shrink-0"
                     />
                   )}
                   <div className="flex-1">
                     <h4 className="font-semibold">
-                      {item.product?.translations?.uz?.title}
+                      {product?.translations[currentLanguage]?.title}
                     </h4>
                     <p className="text-sm text-gray-600">
-                      {item.product?.translations?.uz?.description}
+                      {product?.translations[currentLanguage]?.description}
                     </p>
                   </div>
                   <div className="text-right text-sm">
                     <p className="text-gray-600">
-                      {t("orders.price")}:{" "}
-                      {item.product?.price?.toLocaleString()}{" "}
+                      {t("orders.price")}: {product?.price?.toLocaleString()}{" "}
                       {t("orders.currency")}
                     </p>
                     <p className="font-medium">
-                      {t("orders.qty")}: ×{item.quantity}
+                      {t("orders.qty")}: ×{order?.products?.length ?? 0}
                     </p>
                     <p className="text-lg font-bold mt-1">
                       {(
-                        (item.product?.price ?? 0) * item.quantity
+                        (product?.price ?? 0) * (order?.products?.length ?? 0)
                       ).toLocaleString()}{" "}
                       {t("orders.currency")}
                     </p>
