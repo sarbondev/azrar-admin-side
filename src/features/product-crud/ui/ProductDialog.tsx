@@ -118,6 +118,46 @@ export const ProductDialog = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const { uz, ru } = form.translations;
+    if (
+      !uz.title.trim() ||
+      !uz.description.trim() ||
+      !ru.title.trim() ||
+      !ru.description.trim()
+    ) {
+      toast({
+        title: t("common.error"),
+        description: t("common.fillAllFields"),
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!form.category) {
+      toast({
+        title: t("common.error"),
+        description: t("common.requiredFields"),
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!form.price || Number(form.price) <= 0) {
+      toast({
+        title: t("common.error"),
+        description: t("common.fillAllFields"),
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!product && files.length === 0) {
+      toast({
+        title: t("common.error"),
+        description: t("common.requiredFields"),
+        variant: "destructive",
+      });
+      return;
+    }
+
     setLoading(true);
     try {
       const fd = new FormData();

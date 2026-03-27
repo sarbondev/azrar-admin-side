@@ -1,7 +1,7 @@
 import * as React from "react";
 
 const TOAST_LIMIT = 1;
-const TOAST_REMOVE_DELAY = 1000000;
+const TOAST_REMOVE_DELAY = 5000;
 
 export type ToastVariant = "default" | "destructive" | "success";
 
@@ -73,6 +73,6 @@ export function useToast() {
   React.useEffect(() => {
     listeners.push(setState);
     return () => { const i = listeners.indexOf(setState); if (i > -1) listeners.splice(i, 1); };
-  }, [state]);
+  }, []);
   return { ...state, toast, dismiss: (toastId?: string) => dispatch({ type: "DISMISS_TOAST", toastId }) };
 }

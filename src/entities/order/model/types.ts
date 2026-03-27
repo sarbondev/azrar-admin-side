@@ -8,12 +8,18 @@ export interface OrderCustomer {
   address: string;
 }
 
+export interface OrderProduct {
+  product: ProductEntity;
+  quantity: number;
+  price: number;
+}
+
 export interface OrderEntity {
   _id: string;
   orderNumber: string;
   status: OrderStatus;
   customer: OrderCustomer;
-  products: ProductEntity[];
+  products: OrderProduct[];
   totalPrice: number;
   internalNotes?: string;
   createdAt: string;

@@ -42,7 +42,7 @@ export const OrderCard = ({ order, onView }: Props) => {
               </span>
               <span className="flex items-center gap-1">
                 <Package className="h-4 w-4" />
-                {order.products?.length ?? 0} {t("orders.products")}
+                {order.products?.reduce((sum, p) => sum + (p.quantity ?? 0), 0) ?? 0} {t("orders.products")}
               </span>
             </CardDescription>
           </div>
@@ -87,7 +87,7 @@ export const OrderCard = ({ order, onView }: Props) => {
               <p>
                 {t("orders.productsCount")}:{" "}
                 <span className="font-medium">
-                  {order.products?.length ?? 0}
+                  {order.products?.reduce((sum, p) => sum + (p.quantity ?? 0), 0) ?? 0}
                 </span>
               </p>
             </div>

@@ -42,7 +42,9 @@ export const ProductDetailPage = () => {
 
   const getImageUrl = (path?: string) => {
     if (!path) return "/placeholder.svg?height=500&width=500";
-    return path.startsWith("http") ? path : `http://localhost:3000${path}`;
+    if (path.startsWith("http")) return path;
+    const base = (import.meta.env.VITE_API_URL ?? "http://localhost:4000/api").replace("/api", "");
+    return `${base}${path}`;
   };
 
   if (loading)

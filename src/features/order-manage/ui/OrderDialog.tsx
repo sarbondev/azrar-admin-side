@@ -153,35 +153,35 @@ export const OrderDialog = ({
               <ShoppingBag className="h-5 w-5" />
               {t("orders.products")} ({order.products?.length ?? 0})
             </h3>
-            {order.products?.map((product, i) => (
+            {order.products?.map((item, i) => (
               <div key={i} className="border rounded-lg p-4">
                 <div className="flex gap-4">
-                  {product?.images?.[0] && (
+                  {item?.product?.images?.[0] && (
                     <img
-                      src={product.images[0]}
-                      alt={product.translations[currentLanguage]?.title}
+                      src={item.product.images[0]}
+                      alt={item.product.translations?.[currentLanguage]?.title}
                       className="w-20 h-20 object-cover rounded-lg flex-shrink-0"
                     />
                   )}
                   <div className="flex-1">
                     <h4 className="font-semibold">
-                      {product?.translations[currentLanguage]?.title}
+                      {item?.product?.translations?.[currentLanguage]?.title}
                     </h4>
                     <p className="text-sm text-gray-600">
-                      {product?.translations[currentLanguage]?.description}
+                      {item?.product?.translations?.[currentLanguage]?.description}
                     </p>
                   </div>
                   <div className="text-right text-sm">
                     <p className="text-gray-600">
-                      {t("orders.price")}: {product?.price?.toLocaleString()}{" "}
+                      {t("orders.price")}: {item?.price?.toLocaleString()}{" "}
                       {t("orders.currency")}
                     </p>
                     <p className="font-medium">
-                      {t("orders.qty")}: ×{order?.products?.length ?? 0}
+                      {t("orders.qty")}: ×{item?.quantity ?? 0}
                     </p>
                     <p className="text-lg font-bold mt-1">
                       {(
-                        (product?.price ?? 0) * (order?.products?.length ?? 0)
+                        (item?.price ?? 0) * (item?.quantity ?? 0)
                       ).toLocaleString()}{" "}
                       {t("orders.currency")}
                     </p>
