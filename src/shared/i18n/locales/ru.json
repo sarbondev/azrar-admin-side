@@ -28,7 +28,8 @@
     "back": "Назад",
     "noImage": "Нет изображения",
     "createdAt": "Создано",
-    "clearFilter": "Очистить фильтр"
+    "clearFilter": "Очистить фильтр",
+    "currency": "сум"
   },
   "sidebar": {
     "dashboard": "Dashboard",
@@ -37,6 +38,7 @@
     "orders": "Заказы",
     "projects": "Проекты",
     "testimonials": "Отзывы",
+    "consultations": "Заявки",
     "admins": "Админы"
   },
   "header": {
@@ -129,7 +131,9 @@
       "selectedImages": "Выбранные изображения:",
       "updated": "Продукт успешно обновлён",
       "created": "Продукт успешно создан",
-      "saveError": "Ошибка при сохранении продукта"
+      "saveError": "Ошибка при сохранении продукта",
+      "colors": "Цвета",
+      "selectedColors": "Выбранные цвета:"
     }
   },
   "categories": {
@@ -289,6 +293,41 @@
       "updated": "Админ успешно обновлён",
       "created": "Админ успешно создан",
       "saveError": "Ошибка при сохранении админа"
+    }
+  },
+  "consultations": {
+    "title": "Заявки",
+    "manage": "Просмотр и управление заявками клиентов",
+    "searchPlaceholder": "Поиск по имени, телефону или сообщению...",
+    "notFound": "Заявки не найдены",
+    "noConsultationsYet": "Заявок пока нет или по вашему запросу ничего не найдено.",
+    "loadError": "Ошибка при загрузке заявок",
+    "deleted": "Заявка успешно удалена",
+    "deleteError": "Ошибка при удалении заявки",
+    "deleteTitle": "Удалить заявку",
+    "deleteDescription": "Вы уверены, что хотите удалить заявку от \"{{name}}\"? Это действие нельзя отменить.",
+    "dialogTitle": "Детали заявки",
+    "contactInfo": "Контактная информация",
+    "subject": "Тема",
+    "message": "Сообщение",
+    "source": "Источник",
+    "internalNotes": "Внутренние заметки",
+    "currentStatus": "Текущий статус",
+    "createdAt": "Дата отправки",
+    "updateStatus": "Обновить статус",
+    "newStatus": "Новый статус",
+    "selectStatus": "Выберите статус",
+    "statusUpdated": "Статус успешно обновлён",
+    "updateError": "Ошибка при обновлении статуса",
+    "allSources": "Все источники",
+    "statusOptions": {
+      "new": "Новая",
+      "in_progress": "В работе",
+      "completed": "Завершена"
+    },
+    "sourceOptions": {
+      "contact": "Страница контактов",
+      "consultation": "Консультация"
     }
   },
   "changePassword": {

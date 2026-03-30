@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/shared/lib/utils";
-import { LayoutDashboard, Package, ShoppingCart, Users, Tag, FolderOpen, MessageSquare } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingCart, Users, Tag, FolderOpen, MessageSquare, PhoneIncoming } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export const Sidebar = () => {
@@ -13,8 +13,9 @@ export const Sidebar = () => {
     { name: t("sidebar.categories"),   href: "/categories",   icon: Tag },
     { name: t("sidebar.orders"),       href: "/orders",       icon: ShoppingCart },
     { name: t("sidebar.projects"),     href: "/projects",     icon: FolderOpen },
-    { name: t("sidebar.testimonials"), href: "/testimonials", icon: MessageSquare },
-    { name: t("sidebar.admins"),       href: "/admins",       icon: Users },
+    { name: t("sidebar.testimonials"),  href: "/testimonials",  icon: MessageSquare },
+    { name: t("sidebar.consultations"), href: "/consultations", icon: PhoneIncoming },
+    { name: t("sidebar.admins"),        href: "/admins",        icon: Users },
   ];
 
   return (

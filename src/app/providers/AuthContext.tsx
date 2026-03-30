@@ -5,6 +5,7 @@ import {
   useEffect,
   type ReactNode,
 } from "react";
+import { useTranslation } from "react-i18next";
 import { authApi } from "@/entities/auth/api/authApi";
 import type { AdminEntity, LoginResult } from "@/entities/auth/model/types";
 import { TOKEN_KEY } from "@/shared/config/constants";
@@ -32,6 +33,7 @@ export const useAuth = (): AuthContextValue => {
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [admin, setAdmin] = useState<AdminEntity | null>(null);
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslation();
 
   const login = async (
     phoneNumber: string,
@@ -45,12 +47,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         window.location.reload();
         return { success: true, message };
       }
-      return { success: false, message: message ?? "Login xatoligi" };
+      return { success: false, message: message ?? t("login.errors.loginError") };
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message?: string } } };
       return {
         success: false,
-        message: error.response?.data?.message ?? "Login xatoligi",
+        message: error.response?.data?.message ?? t("login.errors.loginError"),
       };
     }
   };

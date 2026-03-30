@@ -10,6 +10,7 @@ import { OrdersPage } from "@/pages/orders";
 import { ProjectsPage } from "@/pages/projects";
 import { TestimonialsPage } from "@/pages/testimonials";
 import { AdminsPage } from "@/pages/admins";
+import { ConsultationsPage } from "@/pages/consultations";
 
 const ProtectedLayout = () => (
   <ProtectedRoute>
@@ -31,6 +32,7 @@ export const router = createBrowserRouter([
       { path: "orders", element: <OrdersPage /> },
       { path: "projects", element: <ProjectsPage /> },
       { path: "testimonials", element: <TestimonialsPage /> },
+      { path: "consultations", element: <ConsultationsPage /> },
       { path: "admins", element: <AdminsPage /> },
     ],
   },

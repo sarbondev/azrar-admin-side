@@ -28,7 +28,8 @@
     "back": "Orqaga",
     "noImage": "Rasm yo'q",
     "createdAt": "Yaratilgan",
-    "clearFilter": "Filterni tozalash"
+    "clearFilter": "Filterni tozalash",
+    "currency": "so'm"
   },
   "sidebar": {
     "dashboard": "Dashboard",
@@ -37,6 +38,7 @@
     "orders": "Buyurtmalar",
     "projects": "Loyihalar",
     "testimonials": "Sharhlar",
+    "consultations": "So'rovlar",
     "admins": "Adminlar"
   },
   "header": {
@@ -152,7 +154,9 @@
       "nameRu": "Nomi (ruscha)*",
       "updated": "Kategoriya yangilandi",
       "created": "Kategoriya yaratildi",
-      "saveError": "Kategoriya saqlashda xatolik"
+      "saveError": "Kategoriya saqlashda xatolik",
+      "colors": "Ranglar",
+      "selectedColors": "Tanlangan ranglar:"
     }
   },
   "orders": {
@@ -289,6 +293,41 @@
       "updated": "Admin muvaffaqiyatli yangilandi",
       "created": "Admin muvaffaqiyatli yaratildi",
       "saveError": "Adminni saqlashda xatolik"
+    }
+  },
+  "consultations": {
+    "title": "So'rovlar",
+    "manage": "Mijoz so'rovlarini ko'ring va boshqaring",
+    "searchPlaceholder": "Ism, telefon yoki xabar qidirish...",
+    "notFound": "So'rovlar topilmadi",
+    "noConsultationsYet": "Hozircha so'rovlar yo'q yoki qidiruv natijasida hech narsa topilmadi.",
+    "loadError": "So'rovlarni yuklashda xatolik yuz berdi",
+    "deleted": "So'rov muvaffaqiyatli o'chirildi",
+    "deleteError": "So'rovni o'chirishda xatolik yuz berdi",
+    "deleteTitle": "So'rovni o'chirish",
+    "deleteDescription": "\"{{name}}\" so'rovini o'chirishni tasdiqlaysizmi? Bu amalni bekor qilib bo'lmaydi.",
+    "dialogTitle": "So'rov tafsilotlari",
+    "contactInfo": "Aloqa ma'lumotlari",
+    "subject": "Mavzu",
+    "message": "Xabar",
+    "source": "Manba",
+    "internalNotes": "Ichki izoh",
+    "currentStatus": "Hozirgi holat",
+    "createdAt": "Yuborilgan vaqt",
+    "updateStatus": "Holatni yangilash",
+    "newStatus": "Yangi holat",
+    "selectStatus": "Holatni tanlang",
+    "statusUpdated": "Holat muvaffaqiyatli yangilandi",
+    "updateError": "Holatni yangilashda xatolik",
+    "allSources": "Barcha manbalar",
+    "statusOptions": {
+      "new": "Yangi",
+      "in_progress": "Jarayonda",
+      "completed": "Bajarildi"
+    },
+    "sourceOptions": {
+      "contact": "Aloqa sahifasi",
+      "consultation": "Konsultatsiya"
     }
   },
   "changePassword": {

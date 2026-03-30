@@ -118,8 +118,7 @@ export const ProductDetailPage = () => {
                 </Badge>
               </div>
               <p className="text-3xl font-bold text-blue-600 mt-4">
-                {product.price.toLocaleString()}
-                {currentLang === "uz" ? "so'm" : "сум"}
+                {product.price.toLocaleString()} {t("common.currency")}
               </p>
             </div>
             <hr />
