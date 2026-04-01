@@ -3,7 +3,7 @@ import { API_URL, TOKEN_KEY } from "@/shared/config/constants";
 
 const api = axios.create({
   baseURL: API_URL,
-  headers: { "Content-Type": "application/json" },
+  headers: { "Content-Type": "application/json", "X-Requested-With": "XMLHttpRequest" },
 });
 
 api.interceptors.request.use((config) => {
